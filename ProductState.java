@@ -19,6 +19,29 @@ public class ProductState {
     private static final int BECOME_SALESCLERK = 7;
     private static final int HELP = 8;
 
+    private ProductState() {
+        if (yesOrNo("Look for saved data and  use it?")) {
+            retrieve();
+        } else {
+            warehouse = Warehouse.instance();
+        }
+    }
+
+    private void retrieve() {
+        try {
+            Warehouse tempWarehouse = Warehouse.retrieve();
+            if (tempWarehouse != null) {
+                System.out.println("The warehouse has been successfully retrieved from the file WarehouseData \n" );
+                warehouse = tempWarehouse;
+            } else {
+                System.out.println("File doesnt exist; creating new warehouse" );
+                warehouse = Warehouse.instance();
+            }
+        } catch(Exception cnfe) {
+            cnfe.printStackTrace();
+        }
+    }
+
     public String getToken(String prompt) {
         do {
             try {
