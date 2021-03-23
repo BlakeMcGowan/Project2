@@ -2,10 +2,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 
 public class ProductState {
+    private static MainScreen mainScreen;
     private static ProductState productState;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
@@ -34,7 +36,7 @@ public class ProductState {
                 System.out.println("The warehouse has been successfully retrieved from the file WarehouseData \n" );
                 warehouse = tempWarehouse;
             } else {
-                System.out.println("File doesnt exist; creating new warehouse" );
+                System.out.println("File doesn't exist; creating new warehouse" );
                 warehouse = Warehouse.instance();
             }
         } catch(Exception cnfe) {
@@ -76,7 +78,7 @@ public class ProductState {
     public int getCommand() {
         do {
             try {
-                int value = Integer.parseInt(getToken("Enter command:" + HELP + " for help"));
+                int value = Integer.parseInt(getToken("Enter command: " + HELP + " for help"));
                 if (value >= LOGOUT && value <= HELP) {
                     return value;
                 }
@@ -93,6 +95,9 @@ public class ProductState {
         System.out.println(ADD_SUPPLIER + " to add a supplier.");
         System.out.println(SHOW_SUPPLIER_LIST + " to show the supplier list.");
         System.out.println(SUPPLIERS_FOR_PRODUCT + " to access the list of suppliers for products.");
+        System.out.println(PRODUCTS_FOR_SUPPLIERS + " to access the list of products for suppliers.");
+        System.out.println(UPDATE_PRODUCTS + " to update product prices.");
+        System.out.println(BECOME_SALESCLERK + " to access the salesclerk menu.");
 
     }
 
@@ -187,12 +192,29 @@ public class ProductState {
         }
     }
 
+
     public void updateProducts(){
+        Product result;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter 1 to add a product, 2 to remove a product, or 3 to edit a current product");
+        int choice = scanner.nextInt();
+
+        if (choice == 1){
+            addProduct();
+        }
+
+        else if (choice == 2){
 
 
+        }
+
+        else{
+
+        }
     }
 
     public void becomeSalesclerk(){
+        MainScreen main = new MainScreen();
 
     }
 
