@@ -104,15 +104,16 @@ public class ManagerState extends WarehouseState{
 
     public void addProduct() {
         Product result;
+        Product product;
         do {
             String title = getToken("Enter Product Name: ");
-            String ID = getToken("Please enter productID");
+            String pID = getToken("Please enter productID");
             String Quantity = getToken("Enter quantity: ");
             String Price = getToken("Enter the price: ");
-            Product product = warehouse.
+            product = warehouse.findProduct(pID);
             int quantity = Integer.parseInt(Quantity);
             double price = Double.parseDouble(Price);
-            result = warehouse.addProduct(title, id, price, quantity);
+            result = warehouse.addProduct(title, pID, price, quantity);
             if (result != null) {
                 System.out.println(result);
             } else {
@@ -123,7 +124,7 @@ public class ManagerState extends WarehouseState{
             }
         } while (true);
     }
- 
+
     public void addSupplier() {
         Supplier result;
         do {
@@ -161,7 +162,7 @@ public class ManagerState extends WarehouseState{
         Product product = warehouse.findProduct(pID);
         if (product != null)
         {
-            Iterator<Supplier> s_traversal = warehouse.getSuppliersOfProduct(product);
+            Iterator<Supplier> s_traversal = warehouse.getSuppliersOfProducts(product);
             Iterator<Float> price_traversal = warehouse.getProductPrices(product);
             while (((s_traversal.hasNext())) && ((price_traversal.hasNext())))
             {
@@ -183,10 +184,10 @@ public class ManagerState extends WarehouseState{
         {
             Product p_temp;
             Iterator<Product> p_traversal = warehouse.getProductBySupplier(supplier);
-            while (p_traversal.hasNext() != false)
+            while (p_traversal.hasNext())
             {
                 p_temp = p_traversal.next();
-                System.out.println(p_temp.getSupplier());
+                System.out.println(p_temp.getSupplierList());
             }
         }
         else
@@ -218,8 +219,7 @@ public class ManagerState extends WarehouseState{
     }
 
     public void becomeSalesclerk(){
-
-
+        (WarehouseContext.instance()).changeState(0);
     }
 
     public void process() {
@@ -259,9 +259,4 @@ public class ManagerState extends WarehouseState{
     public void run() {
         process();
     }
-
-    public static void main(String[] args) {
-        ManagerState.instance().process();
-    }
-
 }
