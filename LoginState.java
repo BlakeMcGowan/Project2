@@ -64,17 +64,21 @@ public class LoginState extends WarehouseState{
 
     private void user(){
         String userID = getToken("Please input the user id: ");
-        if (Warehouse.instance().searchMembership(userID) != null){
-            (WarehouseContext.instance()).setLogin(WarehouseContext.IsUser);
-            (WarehouseContext.instance()).setUser(userID);
-            (WarehouseContext.instance()).changeState(1);
-        }
-        else
-            System.out.println("Invalid user id.");
+//        if (Warehouse.instance().searchMembership(userID) != null){
+//            (WarehouseContext.instance()).setLogin(WarehouseContext.IsUser);
+//            (WarehouseContext.instance()).setUser(userID);
+//            (WarehouseContext.instance()).changeState(1);
+//        }
+//        else
+//            System.out.println("Invalid user id.");
+        //bug hunting. need to make sure to use the userID to log into ClientState
+        (WarehouseContext.instance()).setLogin(WarehouseContext.IsUser);
+        (WarehouseContext.instance()).changeState(1);
     }
 
     private void manager(){
-
+        (WarehouseContext.instance()).setLogin(WarehouseContext.IsManager);
+        (WarehouseContext.instance()).changeState(2);
     }
 
     public void process() {
