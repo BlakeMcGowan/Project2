@@ -79,7 +79,7 @@ public class Clerkstate extends WarehouseState {
     do {
       try {
         int value = Integer.parseInt(getToken("Enter command:" + HELP + " for help"));
-        if (value >= EXIT && value <= HELP) {
+        if (value >= LOG_OUT && value <= HELP) {
           return value;
         }
       } catch (NumberFormatException nfe) {
