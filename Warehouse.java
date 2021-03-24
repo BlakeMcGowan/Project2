@@ -1,210 +1,127 @@
 import java.util.*;
 import java.io.*;
 
-public class Warehouse implements Serializable{
-    private static final long serialVersionUID = 1L;
-    public static final int SUPPLIER_NOT_FOUND = 1;
-    public static final int PRODUCT_NOT_FOUND = 2;
-    public static final int CLIENT_NOT_FOUND = 3;
-    public static final int NO_SUCH_PRODUCT = 4;
-    public static final int NO_SUCH_SUPPLIER = 5;
-    public static final int NO_SUCH_CLIENT = 6;
+public class Warehouse implements Serializable {
 
-    private Inventory inventory;
-    private SupplierList supplierList;
+    private static final long serialVersionUID = 1L;
+    private ProductList productList;
     private ClientList clientList;
+    private ManufacturerList manufacturerList;
     private OrderList orderList;
+    private Order order;
     private static Warehouse warehouse;
 
     private Warehouse() {
-        inventory = Inventory.instance();
-        supplierList = SupplierList.instance();
+        productList = ProductList.instance();
         clientList = ClientList.instance();
+        manufacturerList = ManufacturerList.instance();
         orderList = OrderList.instance();
+
     }
 
     public static Warehouse instance() {
         if (warehouse == null) {
-            SupplierIDServer.instance(); //instatiates singletons
-            ClientIDServer.instance(); //instatiates singletons
+            ClientIdServer.instance(); // instantiate all singletons
+            ManufacturerIDServer.instance(); // instantiate all singletons
             return (warehouse = new Warehouse());
-        }
-        else{
+        } else {
             return warehouse;
         }
     }
 
-    public Product addProduct(int price, int quantity, String name){
-        Product product = new Product(price, quantity, name);
-        if (inventory.insertProduct(product)) {
+    public Product addProduct(String title, String id, double price, int quantity) {
+
+        Product product = new Product(title, id, price, quantity);
+        if (productList.insertProduct(product)) {
             return (product);
         }
         return null;
     }
 
-    public Supplier addSupplier(String name, String address, String description){
-        Supplier supplier = new Supplier (name, address, description);
-        if (supplierList.insertSupplier(supplier)){
-            return(supplier);
+    public Client addMember(String name, String address, String phone) {
+        Client member = new Client(name, address, phone);
+        if (clientList.insertMember(member)) {
+            return (member);
         }
         return null;
     }
 
-    public Client addClient(String name, String phone, String address){
-        Client client = new Client (name, phone, address);
-        if (clientList.insertClient(client)){
-            return(client);
+    public Manufacturer addManufacturer(String name, String address, String phone) {
+        Manufacturer manu = new Manufacturer(name, address, phone);
+        if (manufacturerList.insertManufacturer(manu)) {
+            return (manu);
         }
         return null;
-    }
-
-    public Product assignProdToSupplier (String productId, String supplierId, double price){
-        Product product = inventory.search(productId);
-        if (product == null)
-        {
-            return null;
-        }
-
-        Supplier supplier = supplierList.search(supplierId);
-        if (supplier == null)
-        {
-            return null;
-        }
-
-        boolean success = product.link(supplier);
-        success = supplier.assignProduct(product);
-        if (success) {
-            return product;
-        }
-        else {
-            return null;
-        }
-    }
-
-    public Product removeProdFromSupplier (String productId, String supplierId){
-        Product product = inventory.search(productId);
-        if (product == null)
-        {
-            return null;
-        }
-
-        Supplier supplier = supplierList.search(supplierId);
-        if (supplier == null)
-        {
-            return null;
-        }
-
-        boolean success = product.unlink(supplier);
-        success = supplier.removeProduct(product);
-        if (success) {
-            return product;
-        }
-        else {
-            System.out.println("Error 4");
-            return null;
-        }
-    }
-
-    public Product searchProduct(String productId){
-        return inventory.search(productId);
-    }
-
-    public Supplier searchSupplier(String supplierId){
-        return supplierList.search(supplierId);
-    }
-
-    public boolean addSuppOrder(Order order)
-    {
-        return OrderList.addOrder(order);
     }
 
     public Iterator getProducts() {
-        return inventory.getProducts();
+        return productList.getProducts();
     }
 
-    public Iterator getSuppliers() {
-        return supplierList.getSuppliers();
+    public Iterator getMembers() {
+        return clientList.getMembers();
     }
 
-    public Iterator getClients() {
-        return clientList.getClients();
+    public Iterator getManufacturers() {
+        return manufacturerList.getManufacturers();
     }
 
-    public Iterator<Supplier> getSuppliersOfProduct (Product p){
-        return p.getSupplier();
+    public Iterator getWaitList(String pId) {
+        // get product waitlist
+        Product p = productList.find(pId);
+        return p.getWaitList();
     }
 
-    public Iterator<Product> getProductBySupplier (Supplier s){
-        return s.getProducts();
+    public Iterator getSupplierList(String pId) {
+        Product p = productList.find(pId);
+        return p.getSupplierList();
     }
 
-    public Iterator<Float> getProductPrices (Product p){
-        return p.getPrices();
+    public Iterator getOrderList() {
+        return order.getItemList();
     }
 
-    public Supplier searchProductSupplier(Product product, Supplier supp){
-        return product.SearchSupplyList(supp);
-    }
-
-    public boolean AddProductsToSuppOrder(Product prod, int q, Order o)
-    {
-        return o.addProductToOrder(prod, q);
-    }
-
-//    public boolean AddOrderToSupplier(Supplier s, Order o)
-//    {
-//        return s.add_Order(o);
-//    }
-
-    public Order CreateOrder(Supplier s)
-    {
-        Order order = new Order(s);
-        return order;
-    }
-
-//    public Iterator<Order> getSuppOrders(Supplier s)
-//    {
-//        return s.getOrders();
-//    }
-
-    public Order searchSuppOrders(String oID)
-    {
-        return OrderList.search(oID);
-    }
     public static Warehouse retrieve() {
         try {
-            FileInputStream file = new FileInputStream("WarehouseData");
+            FileInputStream file = new FileInputStream("ManagerData");
             ObjectInputStream input = new ObjectInputStream(file);
             input.readObject();
-            ClientIDServer.retrieve(input);
+            ClientIdServer.retrieve(input);
+            ManufacturerIDServer.retrieve(input);
             return warehouse;
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return null;
-        } catch(ClassNotFoundException cnfe) {
+        } catch (ClassNotFoundException cnfe) {
             cnfe.printStackTrace();
             return null;
         }
     }
 
-    public static  boolean save() {
+    public static boolean save() {
         try {
-            FileOutputStream file = new FileOutputStream("WarehouseData");
+            FileOutputStream file = new FileOutputStream("ManagerData");
             ObjectOutputStream output = new ObjectOutputStream(file);
             output.writeObject(warehouse);
-            output.writeObject(ClientIDServer.instance());
+            output.writeObject(ClientIdServer.instance());
+            output.writeObject(ManufacturerIDServer.instance());
+
             return true;
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
             return false;
         }
+    }
+
+    public boolean addToOrderList() {
+        return orderList.addOrder(order);
     }
 
     private void writeObject(java.io.ObjectOutputStream output) {
         try {
             output.defaultWriteObject();
             output.writeObject(warehouse);
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             System.out.println(ioe);
         }
     }
@@ -217,13 +134,147 @@ public class Warehouse implements Serializable{
             } else {
                 input.readObject();
             }
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public boolean findClient(String clientID) {
+        return clientList.find(clientID) != null;
+    }
+
+    public Client getClient(String clientID) {
+        return clientList.find(clientID);
+    }
+
+    public Order findOrder(String clientID) {
+        return orderList.find(clientID);
+    }
+
+    public void printOrder(String clientId) {
+        Order order = warehouse.findOrder(clientId);;
+        order.printOrder();
+
+    }
+
+    public Product findProduct(String pId) {
+        return productList.find(pId);
+    }
+
+    public Manufacturer findManufacturer(String mId) {
+        return manufacturerList.find(mId);
+    }
+
+    public void updateClientBalance(String clientId, double total) {
+        Client client = clientList.find(clientId);
+        client.addBalance(total);
+    }
+
+    public double getClientBalance(String clientId) {
+        Client client = clientList.find(clientId);
+        return client.getBalance();
+    }
+
+    // creates an order for a client
+    public void createOrder(String clientId) {
+        order = new Order(clientId);
+    }
+
+    public void addToOrder(String cId, String pId, int quantity) {
+        Product product = productList.find(pId);
+        if (product != null) {
+            Item newItem = new Item(pId, quantity, (product.getPrice() * quantity));
+            order.getItemLists().add(newItem);
+        }
+    }
+
+    public void processOrder(String cId) {
+        Client client = clientList.find(cId);
+        double totalPrice = 0;
+        int quantity;
+        Iterator allItems = warehouse.getOrderList();
+        System.out.println("Invoice");
+        System.out.println("---------");
+
+        while (allItems.hasNext()) {
+            Item i = (Item) (allItems.next());
+            // System.out.println(i.print());
+            quantity = i.getQuantity();
+            totalPrice += i.getTotal();
+
+            Product product = productList.find(i.getProductId());
+            if (product != null) {
+                if (quantity > product.getQuantity()) {
+                    int waitListQuantity = quantity - product.getQuantity();
+                    //Item newItem = new Item(pId, quantity, (product.getPrice() * quantity));
+                    Item newWaitListItem = new Item(i.getProductId(), waitListQuantity, product.getPrice() * waitListQuantity);
+                    newWaitListItem.associateClientID(cId);
+                    //  order.getItemLists().add(newItem);
+                    Wait test = new Wait(client, waitListQuantity);
+                    System.out.println(product.getQuantity() + " " + product.getProduct() + " fulfilled.");
+                    System.out.println(waitListQuantity + " " + product.getProduct() + " added to wait list.");
+                    product.addToWaitList(test);
+                    //waitList.addItem(newWaitListItem);
+                    product.setQuantity(0); // Set it to 0 since its out of stock
+
+                } else if (quantity <= product.getQuantity()) {
+                    //Item newItem = new Item(pId, quantity, (product.getPrice() * quantity));
+                    //order.addItem(newItem);
+                    int newQuantity = product.getQuantity() - quantity;
+                    product.setQuantity(newQuantity);
+
+                    System.out.println(quantity + " " + product.getProduct() + " fulfilled. ");
+                    // System.out.println("Quantity remaining: " + newQuantity);
+                }
+            } else {
+                System.out.println("Product not found.");
+            }
+        }
+        System.out.println("Total order = " + totalPrice);
+
+    }
+
+    public void updateQuantity(Product p, int q) {
+        p.updateQuantity(q);
+    }
+
+    public void addSupplierToProduct(Product p, Manufacturer m, double price) {
+        Supplier s = new Supplier(m, price);
+        p.addToSupplierList(s);
+    }
+
+    public void deleteSupplierFromProduct(Product p, Manufacturer m) {
+        // find supplier first
+        Supplier s = p.find(m.getId());
+
+        p.deleteFromSupplierList(s);
+    }
+
+    public boolean fulfillWaitList(Product p, Client c, int q) {
+        if (p.fulfillOrder(c, q)) {
+            updateClientBalance(c.getId(), p.getPrice() * q);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String toString() {
-        return clientList + "\n" + supplierList + "\n" + inventory + "\n" + orderList;
+        return warehouse + "\n" + clientList;
+    }
+
+    public Iterator getTransactions(String memberId) {
+        Client client = clientList.find(memberId);
+        if (client == null) {
+            return (null);
+        }
+        return client.getTransactions(memberId);
+    }
+
+    public void addToTransactions(String clientId, double balance) {
+        Client client = clientList.find(clientId);
+        client.addToTransactionList(balance);
     }
 }

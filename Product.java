@@ -1,110 +1,95 @@
-import java.io.Serializable;
 import java.util.*;
 import java.io.*;
 
 public class Product implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private String product;
     private String id;
-    private int purchasePrice;
-    private int quantityAvailable;
-    private String productName;
-    private List<Supplier> productSupplier = new LinkedList<Supplier>();
-    private List<Float> productPrices = new LinkedList<Float>();
-    private static final String PRODUCT_STRING = "P";
+    private List supplierList = new LinkedList();
+    private double price;
+    private int quantity;
+    private List waitList = new LinkedList();
 
-    //Constructor
-    public Product(int purchasePrice, int quantityAvaliable, String productName){
-        this.purchasePrice = purchasePrice;
-        this.quantityAvailable = quantityAvaliable;
-        this.productName = productName;
-        id = PRODUCT_STRING + (ProductIDServer.instance()).getId();
+    public Product(String title, String id, double price, int quantity) {
+        this.product = title;
+        this.id = id;
+        this.price = price;
+        this.quantity = quantity;
     }
 
-    public int getPurchasePrice(){
-        return purchasePrice;
+    public String getProduct() {
+        return product;
     }
 
-    public int getQuantityAvailable(){
-        return quantityAvailable;
+    public Iterator getWaitList() {
+        return waitList.iterator();
     }
 
-    public String getProductName(){
-        return productName;
+    public Iterator getSupplierList() {
+        return supplierList.iterator();
     }
 
     public String getId() {
         return id;
     }
 
-    public void setPurchasePrice(int newPurchasePrice){
-        purchasePrice = newPurchasePrice;
+    public double getPrice() {
+        return price;
     }
 
-    public void setQuantityAvailable(int newQuantityAvailable){
-        quantityAvailable = newQuantityAvailable;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setProductName(String newProductName){
-        productName = newProductName;
+    public void updateQuantity(int q) {
+        quantity += q;
     }
 
-    public boolean equals(String id) {
-        return this.id.equals(id);
+    public void setQuantity(int q) {
+        quantity = q;
     }
 
-    public boolean link(Supplier supplier){
-        return productSupplier.add(supplier) ? true: false;
+    public void addToWaitList(Wait item) {
+        waitList.add(item);
     }
 
-    public boolean unlink(Supplier supplier){
-        return productSupplier.remove(supplier) ? true: false;
+    public void addToSupplierList(Supplier supplier) {
+        supplierList.add(supplier);
     }
 
-    public Iterator<Supplier> getSupplier() {
-        return productSupplier.iterator();
+    public void deleteFromSupplierList(Supplier supplier) {
+        supplierList.remove(supplier);
     }
 
-    public Supplier SearchSupplyList(Supplier supplier)
-    {
-        int i = 0;
-        for (; i <= productSupplier.size()-1; i++)
-        {
-            if((productSupplier.get(i)) == supplier)
-            {
-                return productSupplier.get(i);
+    public boolean fulfillOrder(Client c, int q) {
+        Iterator allWaitlist = waitList.iterator();
+        while (allWaitlist.hasNext()) {
+            Wait wait = (Wait) (allWaitlist.next());
+            if (c.equals(wait.getClient())) {
+                if (wait.getQuantity() == q) {
+                    //allWaitlist.remove();
+                } else {
+                    wait.updateQuantity(q);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Supplier find(String sId) {
+        for (Iterator iterator = supplierList.iterator(); iterator.hasNext();) {
+            Supplier s = (Supplier) iterator.next();
+            if (sId.equals(s.getId())) {
+                return s;
             }
         }
         return null;
     }
 
-    public Boolean addPrice(Float price){
-        return productPrices.add(price) ? true : false;
-    }
-
-    public Boolean removePrice(int position){
-        if (productPrices.remove(position) >= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public List<Supplier> getList(){
-        return productSupplier;
-    }
-
-    public Iterator<Float> getPrices(){
-        return productPrices.iterator();
-    }
-
-    public double moneyRound(float num) {
-        return Math.round(num * 100.00) / 100.00;
-    }
-
+    @Override
     public String toString() {
-        return "Product: " + productName + " ID: " + id + " Qty: " + quantityAvailable;
+        return "id " + id + " product " + product + " price " + price + " quantity " + quantity;
     }
-
 }

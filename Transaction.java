@@ -3,14 +3,15 @@ import java.util.Date;
 
 public class Transaction implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Date date;
     private String description;
-    private int amount;
+    private double balance;
 
-    public void Transaction(Date date, String description, int amount) {
+    public void Transaction(Date date, String description, double balance) {
         this.date = date;
         this.description = description;
-        this.amount = amount;
+        this.balance = balance;
     }
 
     public Date getDate(){
@@ -21,13 +22,12 @@ public class Transaction implements Serializable {
         return description;
     }
 
-    public int getAmount(){
-        return amount;
+    public double getBalance(){
+        return balance;
     }
 
+    @Override
     public String toString(){
-        String string = " Date: " + date + "Description: "+ description + "Amount: "+ amount + "  ";
-        return string;
+        return (" Date: " + date + "Description: "+ description + "Balance: "+ balance + "  ");
     }
 }
-

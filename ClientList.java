@@ -1,18 +1,16 @@
-import java.io.Serializable;
 import java.util.*;
 import java.io.*;
 
-public class ClientList implements Serializable
-{
-    private static int IDGenerator = 0;
+public class ClientList implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private List clients = new LinkedList();
     private static ClientList clientList;
 
-    private ClientList(){}
+    private ClientList() {
+    }
 
-    public static ClientList instance()
-    {
+    public static ClientList instance() {
         if (clientList == null) {
             return (clientList = new ClientList());
         } else {
@@ -20,13 +18,12 @@ public class ClientList implements Serializable
         }
     }
 
-    public boolean insertClient(Client client) {
-        clients.add(client);
+    public boolean insertMember(Client member) {
+        clients.add(member);
         return true;
     }
 
-    public Iterator getClients()
-    {
+    public Iterator getMembers() {
         return clients.iterator();
     }
 
@@ -34,7 +31,7 @@ public class ClientList implements Serializable
         try {
             output.defaultWriteObject();
             output.writeObject(clientList);
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
@@ -51,13 +48,24 @@ public class ClientList implements Serializable
                     input.readObject();
                 }
             }
-        } catch(IOException ioe) {
-            System.out.println("in ClientList readObject \n" + ioe);
-        } catch(ClassNotFoundException cnfe) {
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (ClassNotFoundException cnfe) {
             cnfe.printStackTrace();
         }
     }
 
+    public Client find(String clientId) {
+        for (Iterator iterator = clients.iterator(); iterator.hasNext();) {
+            Client client = (Client) iterator.next();
+            if (clientId.equals(client.getId())) {
+                return client;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String toString() {
         return clients.toString();
     }

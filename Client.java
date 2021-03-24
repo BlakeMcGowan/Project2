@@ -1,86 +1,91 @@
-import java.io.Serializable;
-import java.util.List;
+import java.util.*;
+import java.io.*;
 
 public class Client implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    private String clientid;
     private String name;
-    private String phone;
     private String address;
+    private String phone;
+    private String id;
+    private List transactions = new LinkedList();
     private double balance;
+    private Calendar orderDate;
+
     private static final String MEMBER_STRING = "C";
-    private ShoppingCart cart;
-    private List<Order> orders;
-    private Warehouse warehouse;
 
-    //Constructor
-    public Client(String name, String phone, String address){
+    public Client(String name, String address, String phone) {
         this.name = name;
-        this.phone = phone;
         this.address = address;
-        this.balance = 0.00;
-        clientid = MEMBER_STRING + (ClientIDServer.instance()).getId();
-        cart = new ShoppingCart();
+        this.phone = phone;
+        id = MEMBER_STRING + (ClientIdServer.instance()).getId();
     }
 
-    public String getClientId() {
-        return clientid;
+    public Iterator getTransactions(String clientId) {
+        List result = new LinkedList();
+        for (Iterator iterator = transactions.iterator(); iterator.hasNext();) {
+            Transaction transaction = (Transaction) iterator.next();
+            result.add(transaction);
+        }
+        return (result.iterator());
+    }//End of getTransactions()
+
+    public void addToTransactionList(double balance) {
+        transactions.add(new Transaction(balance));
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getPhone(){
-        return phone;
-    }
-
-    public String getAddress(){
-        return address;
-    }
-
-    public void setName(String newName){
-        name = newName;
-    }
-
-    public void setPhone(String newPhone){
-        phone = newPhone;
-    }
-
-    public void setAddress(String newAddress){
-        address = newAddress;
-    }
-
-    public boolean equals(String id) {
-        return this.clientid.equals(id);
-    }
-    public String toString() {
-        String string = "Client name " + name + " address " + address + " id " + clientid + " phone " + phone + " Balance";
-        return string;
-    }
-
-    public void addToCart(String productID, int quantity)
-    {
-        cart.addProduct(productID, quantity);
-    }
-
-    public void removeFromCart(String productID, int quantity)
-    {
-        cart.removeProduct(productID, quantity);
-    }
-
-    public double getBalance(){
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(double expense){
-        balance += expense;
+    public void addBalance(double balance) {
+        this.balance += balance;
     }
 
-    /*
-    public void checkOut()
-    {
-        orders.add(new Order(cart, warehouse));
+    public void subBalance(double balance) {
+        this.balance -= balance;
     }
-    */
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    public void setAddress(String newAddress) {
+        address = newAddress;
+    }
+
+    public void setPhone(String newPhone) {
+        phone = newPhone;
+    }
+
+    public boolean equals(String id) {
+        return this.id.equals(id);
+    }
+
+    @Override
+    public String toString() {
+        String string = "Member name " + name + " address " + address + " id " + id + " phone " + phone;
+        return string;
+    }
+
+    public String toStringBalance() {
+        String string = "Member name: " + name + " id: " + id + " balance: " + balance;
+        return string;
+    }
 }
