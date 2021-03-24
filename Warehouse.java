@@ -6,7 +6,7 @@ public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
     private ProductList productList;
     private ClientList clientList;
-    private ManufacturerList manufacturerList;
+    private SupplierList SupplierList;
     private OrderList orderList;
     private Order order;
     private static Warehouse warehouse;
@@ -14,7 +14,7 @@ public class Warehouse implements Serializable {
     private Warehouse() {
         productList = ProductList.instance();
         clientList = ClientList.instance();
-        manufacturerList = ManufacturerList.instance();
+        SupplierList = SupplierList.instance();
         orderList = OrderList.instance();
 
     }
@@ -22,7 +22,7 @@ public class Warehouse implements Serializable {
     public static Warehouse instance() {
         if (warehouse == null) {
             ClientIdServer.instance(); // instantiate all singletons
-            ManufacturerIDServer.instance(); // instantiate all singletons
+            SupplierIDServer.instance(); // instantiate all singletons
             return (warehouse = new Warehouse());
         } else {
             return warehouse;
@@ -46,10 +46,10 @@ public class Warehouse implements Serializable {
         return null;
     }
 
-    public Manufacturer addManufacturer(String name, String address, String phone) {
-        Manufacturer manu = new Manufacturer(name, address, phone);
-        if (manufacturerList.insertManufacturer(manu)) {
-            return (manu);
+    public Supplier addSupplier(String name, String address, String phone) {
+        Supplier supp = new Supplier(name, address, phone);
+        if (SupplierList.insertSupplier(supp)) {
+            return (supp);
         }
         return null;
     }
@@ -67,8 +67,8 @@ public class Warehouse implements Serializable {
         return clientList.getMembers();
     }
 
-    public Iterator getManufacturers() {
-        return manufacturerList.getManufacturers();
+    public Iterator getSuppliers() {
+        return SupplierList.getSuppliers();
     }
 
     public Iterator getWaitList(String pId) {
@@ -92,7 +92,7 @@ public class Warehouse implements Serializable {
             ObjectInputStream input = new ObjectInputStream(file);
             input.readObject();
             ClientIdServer.retrieve(input);
-            ManufacturerIDServer.retrieve(input);
+            SupplierIDServer.retrieve(input);
             return warehouse;
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -109,7 +109,7 @@ public class Warehouse implements Serializable {
             ObjectOutputStream output = new ObjectOutputStream(file);
             output.writeObject(warehouse);
             output.writeObject(ClientIdServer.instance());
-            output.writeObject(ManufacturerIDServer.instance());
+            output.writeObject(SupplierIDServer.instance());
 
             return true;
         } catch (IOException ioe) {
@@ -168,8 +168,8 @@ public class Warehouse implements Serializable {
         return productList.find(pId);
     }
 
-    public Manufacturer findManufacturer(String mId) {
-        return manufacturerList.find(mId);
+    public Supplier findSupplier(String sId) {
+        return SupplierList.find(sId);
     }
 
     public void updateClientBalance(String clientId, double total) {
@@ -245,14 +245,14 @@ public class Warehouse implements Serializable {
         p.updateQuantity(q);
     }
 
-    public void addSupplierToProduct(Product p, Manufacturer m, double price) {
-        Supplier s = new Supplier(m, price);
+    public void addSupplierToProduct(Product p, Supplier m, double price) {
+        Shipment s = new Shipment(m, price);
         p.addToSupplierList(s);
     }
 
-    public void deleteSupplierFromProduct(Product p, Manufacturer m) {
+    public void deleteSupplierFromProduct(Product p, Supplier m) {
         // find supplier first
-        Supplier s = p.find(m.getId());
+        Shipment s = p.find(m.getId());
 
         p.deleteFromSupplierList(s);
     }

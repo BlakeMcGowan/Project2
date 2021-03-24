@@ -123,14 +123,14 @@ public class ManagerState extends WarehouseState{
             }
         } while (true);
     }
-
-    public void addManufacturer() {
-        Manufacturer result;
+ 
+    public void addSupplier() {
+        Supplier result;
         do {
             String name = getToken("Enter Supplier Name: ");
             String address = getToken("Enter Address: ");
             String phone = getToken("Enter Description: ");
-            result = warehouse.addManufacturer(name, address, phone);
+            result = warehouse.addSupplier(name, address, phone);
             if (result != null) {
                 System.out.println(result);
             } else {
@@ -144,7 +144,7 @@ public class ManagerState extends WarehouseState{
 
     public void showSupplier() {
 
-        Iterator<Supplier> allSuppliers = warehouse.getManufacturers();
+        Iterator<Supplier> allSuppliers = warehouse.getSuppliers();
         System.out.println("---------------------------------------------------------------");
         while (allSuppliers.hasNext()){
             Supplier supplier = allSuppliers.next();
@@ -155,19 +155,19 @@ public class ManagerState extends WarehouseState{
 
     public void listSuppliersOfProduct()
     {
-        Manufacturer manufacturer;
+        Supplier supplier;
         float price;
         String pID = getToken("Enter the product ID: ");
         Product product = warehouse.findProduct(pID);
         if (product != null)
         {
-            Iterator<Manufacturer> s_traversal = warehouse.getSuppliersOfProduct(product);
+            Iterator<Supplier> s_traversal = warehouse.getSuppliersOfProduct(product);
             Iterator<Float> price_traversal = warehouse.getProductPrices(product);
             while (((s_traversal.hasNext())) && ((price_traversal.hasNext())))
             {
-                manufacturer = s_traversal.next();
+                supplier = s_traversal.next();
                 price = price_traversal.next();
-                System.out.println("Supplier: " + manufacturer.getName() + ". Supply Price: $" + price);
+                System.out.println("Supplier: " + supplier.getName() + ". Supply Price: $" + price);
             }
         }
         else
@@ -178,8 +178,8 @@ public class ManagerState extends WarehouseState{
     public void listProductsBySupplier()
     {
         String s = getToken("Please enter supplier ID: ");
-        Manufacturer manufacturer = warehouse.findManufacturer(s);
-        if (manufacturer != null)
+        Supplier supplier = warehouse.findSupplier(s);
+        if (supplier != null)
         {
             Product p_temp;
             Iterator<Product> p_traversal = warehouse.getProductBySupplier(supplier);
@@ -232,7 +232,7 @@ public class ManagerState extends WarehouseState{
                 case ADD_PRODUCT              :  addProduct();
                     break;
 
-                case ADD_SUPPLIER          :  addManufacturer();
+                case ADD_SUPPLIER          :  addSupplier();
                     break;
 
                 case SHOW_SUPPLIER_LIST  :  showSupplier();
