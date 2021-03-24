@@ -1,5 +1,4 @@
 import java.util.*;
-import java.text.*;
 import java.io.*;
 public class WarehouseContext {
 
@@ -7,7 +6,7 @@ public class WarehouseContext {
     private static Warehouse warehouse;
     private static WarehouseContext context;
     private int currentUser;
-    static private String userID;
+    private String userID;
     private BufferedReader reader = new BufferedReader(new
             InputStreamReader(System.in));
     public static final int IsClerk = 0;
@@ -57,13 +56,13 @@ public class WarehouseContext {
     public void setLogin(int code)
     {currentUser = code;}
 
-    static public void setUser(String uID)
+    public void setUser(String uID)
     { userID = uID;}
 
     public int getLogin()
     { return currentUser;}
 
-    static public String getUser()
+    public String getUser()
     { return userID;}
 
     private WarehouseContext() { //constructor
@@ -75,10 +74,10 @@ public class WarehouseContext {
         }
         // set up the FSM and transition table;
         states = new WarehouseState[4];
-        states[0] = Clerkstate.instance();
-        states[1] = Userstate.instance();
+        states[0] = ClientState.instance();
+        states[1] = Clerkstate.instance();
         states[2] =  LoginState.instance();
-        states[3] =  ProductState.instance();
+        states[3] =  ManagerState.instance();
         nextState = new int[4][4];
         nextState[0][0] = 2;nextState[0][1] = 1;nextState[0][2] = -2;
         nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;
