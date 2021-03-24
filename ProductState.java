@@ -7,7 +7,6 @@ import java.util.StringTokenizer;
 
 
 public class ProductState {
-    private static MainScreen mainScreen;
     private static ProductState productState;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
@@ -20,6 +19,7 @@ public class ProductState {
     private static final int UPDATE_PRODUCTS = 6;
     private static final int BECOME_SALESCLERK = 7;
     private static final int HELP = 8;
+
 
     private ProductState() {
         if (yesOrNo("Look for saved data and  use it?")) {
@@ -214,7 +214,7 @@ public class ProductState {
     }
 
     public void becomeSalesclerk(){
-        MainScreen main = new MainScreen();
+
 
     }
 
