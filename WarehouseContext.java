@@ -12,6 +12,7 @@ public class WarehouseContext {
             InputStreamReader(System.in));
     public static final int IsClerk = 0;
     public static final int IsUser = 1;
+    public static final int IsManager = 2;
     private WarehouseState[] states;
     private int[][] nextState;
 
@@ -73,12 +74,12 @@ public class WarehouseContext {
             warehouse = Warehouse.instance();
         }
         // set up the FSM and transition table;
-        states = new WarehouseState[3];
+        states = new WarehouseState[4];
         states[0] = Clerkstate.instance();
         states[1] = Userstate.instance();
         states[2] =  LoginState.instance();
         states[3] =  ProductState.instance();
-        nextState = new int[3][3];
+        nextState = new int[4][4];
         nextState[0][0] = 2;nextState[0][1] = 1;nextState[0][2] = -2;
         nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;
         nextState[2][0] = 0;nextState[2][1] = 1;nextState[2][2] = -1;
