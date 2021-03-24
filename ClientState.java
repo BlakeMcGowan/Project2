@@ -63,7 +63,7 @@ public class ClientState extends WarehouseState{
         System.out.println(SHOW_PRODUCT_LIST + " to display the product list.");
         System.out.println(SHOW_CLIENT_TRANSACTIONS + " to display client transaction history.");
         System.out.println(MODIFY_SHOPPING_CART + " to make changes to your shopping cart.");
-        System.out.println(SHOW_WAIT_LIST + " to view your waitlist.");
+        System.out.println(SHOW_WAIT_LIST + " to view a product waitlist.");
         System.out.println(HELP + " to display this message.");
 
     }
@@ -152,7 +152,7 @@ public class ClientState extends WarehouseState{
     private void showClientTransactions()
     {
         Client client = warehouse.getClient(WarehouseContext.getUser());
-        //transactions to string out
+        //System.out.println(); transactions to string needed
     }
 
     private void modifyShoppingCart()
@@ -162,6 +162,14 @@ public class ClientState extends WarehouseState{
 
     private void showWaitList()
     {
-        //functionaility for showing client's waitlist
+        String productID = getToken("Please input the user id: ");
+        Product product = warehouse.findProduct(productID);
+        if (product != null){
+            System.out.println("Product Waitlist");
+            //Need product waitlist to string
+            //(WarehouseContext.instance()).changeState(); product state needed
+        }
+        else
+            System.out.println("Invalid product id.");
     }
 }
