@@ -54,11 +54,11 @@ public class Product implements Serializable {
         waitList.add(item);
     }
 
-    public void addToSupplierList(Supplier supplier) {
+    public void addToSupplierList(Shipment supplier) {
         supplierList.add(supplier);
     }
 
-    public void deleteFromSupplierList(Supplier supplier) {
+    public void deleteFromSupplierList(Shipment supplier) {
         supplierList.remove(supplier);
     }
 
@@ -78,9 +78,9 @@ public class Product implements Serializable {
         return false;
     }
 
-    public Supplier find(String sId) {
+    public Shipment find(String sId) {
         for (Iterator iterator = supplierList.iterator(); iterator.hasNext();) {
-            Supplier s = (Supplier) iterator.next();
+            Shipment s = (Shipment) iterator.next();
             if (sId.equals(s.getId())) {
                 return s;
             }

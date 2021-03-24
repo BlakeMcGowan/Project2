@@ -147,7 +147,7 @@ public class Clerkstate extends WarehouseState {
   }
   
   public void showSupplier()   {
-    Iterator<Supplier>  allSuppliers = warehouse.getSuppliers();
+    Iterator<Shipment>  allSuppliers = warehouse.getSuppliers();
     if(allSuppliers.hasNext() == false){
       System.out.println("No Supplier in the System.\n");
       return;
@@ -155,7 +155,7 @@ public class Clerkstate extends WarehouseState {
       System.out.println("-------------------------------------------------");
       while ((allSuppliers.hasNext()) != false)
       {
-        Supplier supplier = allSuppliers.next();
+        Shipment supplier = allSuppliers.next();
         System.out.println(supplier.toString());
       }
       System.out.println("-------------------------------------------------\n");
@@ -202,12 +202,12 @@ public class Clerkstate extends WarehouseState {
     System.out.println("-----------------------------------------------");
     if (product != null)
     {
-      SupplierShipment supplierShipment;
-      Iterator<SupplierShipment> allSuppliers = warehouse.getSuppliersOfProduct(product);
+      shipment shipment;
+      Iterator<shipment> allSuppliers = warehouse.getSuppliersOfProduct(product);
       while ((allSuppliers.hasNext()) != false)
       {
-        supplierShipment = allSuppliers.next();
-        System.out.println("Supplier: " + supplierShipment.getSupplier().getSupplierName() + ". Price: $" + supplierShipment.getPrice() + " Quantity: " + supplierShipment.getQuantity());
+        shipment = allSuppliers.next();
+        System.out.println("Supplier: " + shipment.getSupplier().getSupplierName() + ". Price: $" + shipment.getPrice() + " Quantity: " + shipment.getQuantity());
       }
       System.out.println("-----------------------------------------------\n");
     }
@@ -220,7 +220,7 @@ public class Clerkstate extends WarehouseState {
   public void listProductsBySupplier()
   {
     String s = getToken("Please enter supplier ID: ");
-    Supplier supplier = warehouse.searchSupplier(s);
+    Shipment supplier = warehouse.searchSupplier(s);
     if (supplier != null)
     {
       Product p_temp;
@@ -256,7 +256,7 @@ public class Clerkstate extends WarehouseState {
       return;
     }
 
-    Supplier supplier = order.getSupplier();
+    Shipment supplier = order.getSupplier();
     Iterator<Product> allProducts = order.getProds();
     Product p;
     Iterator<Integer> quantities = order.getQs();
@@ -278,22 +278,22 @@ public class Clerkstate extends WarehouseState {
       Product prod;
       Iterator<Integer> qtys = order.getQs();
       int quant;
-      SupplierShipment supplierShipment;
+      Shipment shipment;
       while (products.hasNext() && qtys.hasNext())
       {
         int j = 1;
         prod = products.next();
         quant = qtys.next();
-        supplierShipment = warehouse.searchProductSupplier(prod, supplier);
-        if (supplierShipment.getQuantity() == 0)
+        shipment = warehouse.searchProductSupplier(prod, supplier);
+        if (shipment.getQuantity() == 0)
         {
-          supplierShipment.setNewQuantity(-1 * quant);
+          shipment.setNewQuantity(-1 * quant);
           //fullfill the waitlist first
-          warehouse.FulfillWaitlist(prod, quant, supplierShipment);
+          warehouse.fulfillWaitList(prod, quant, shipment);
         }
         else
         {
-          supplierShipment.setNewQuantity(-1 * quant);
+          shipment.setNewQuantity(-1 * quant);
         }
         j++;
       }
