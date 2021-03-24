@@ -8,6 +8,7 @@ public class Supplier implements Serializable {
     private String address;
     private String phone;
     private String id;
+    private List<Product> Product = new LinkedList<Product>();
     private static final String MEMBER_STRING = "M";
     private List transactions = new LinkedList();
 
@@ -16,6 +17,10 @@ public class Supplier implements Serializable {
         this.address = address;
         this.phone = phone;
         id = MEMBER_STRING + (SupplierIDServer.instance()).getId();
+    }
+
+    public Iterator<Product> getProducts(){
+        return Product.iterator();
     }
 
     public String getName() {
