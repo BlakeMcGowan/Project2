@@ -9,6 +9,7 @@ public class Product implements Serializable {
     private List supplierList = new LinkedList();
     private double price;
     private int quantity;
+    private List<Float> productPrices = new LinkedList<Float>();
     private List waitList = new LinkedList();
 
     public Product(String title, String id, double price, int quantity) {
@@ -28,6 +29,12 @@ public class Product implements Serializable {
 
     public Iterator getSupplierList() {
         return supplierList.iterator();
+    }
+
+
+
+    public Iterator getPrices(){
+        return productPrices.iterator();
     }
 
     public String getId() {
