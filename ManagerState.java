@@ -6,10 +6,11 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 
-public class ProductState {
-    private static ProductState productState;
+public class ManagerState extends WarehouseState{
+    private static ManagerState managerState;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
+    private WarehouseContext context;
     private static final int LOGOUT = 0;
     private static final int ADD_PRODUCT = 1;
     private static final int ADD_SUPPLIER = 2;
@@ -21,7 +22,7 @@ public class ProductState {
     private static final int HELP = 8;
 
 
-    private ProductState() {
+    private ManagerState() {
         if (yesOrNo("Look for saved data and  use it?")) {
             retrieve();
         } else {
@@ -59,11 +60,11 @@ public class ProductState {
         } while (true);
     }
 
-    public static ProductState instance() {
-        if (productState == null) {
-            return productState = new ProductState();
+    public static ManagerState instance() {
+        if (managerState == null) {
+            return managerState = new ManagerState();
         } else {
-            return productState;
+            return managerState;
         }
     }
 
@@ -104,12 +105,14 @@ public class ProductState {
     public void addProduct() {
         Product result;
         do {
-            String name = getToken("Enter Product Name: ");
+            String title = getToken("Enter Product Name: ");
+            String ID = getToken("Please enter productID");
             String Quantity = getToken("Enter quantity: ");
             String Price = getToken("Enter the price: ");
+            Product product = warehouse.
             int quantity = Integer.parseInt(Quantity);
-            int price = Integer.parseInt(Price);
-            result = warehouse.addProduct(price, quantity, name);
+            double price = Double.parseDouble(Price);
+            result = warehouse.addProduct(title, id, price, quantity);
             if (result != null) {
                 System.out.println(result);
             } else {
@@ -121,13 +124,13 @@ public class ProductState {
         } while (true);
     }
 
-    public void addSupplier() {
-        Supplier result;
+    public void addManufacturer() {
+        Manufacturer result;
         do {
             String name = getToken("Enter Supplier Name: ");
             String address = getToken("Enter Address: ");
-            String description = getToken("Enter Description: ");
-            result = warehouse.addSupplier(name, address, description);
+            String phone = getToken("Enter Description: ");
+            result = warehouse.addManufacturer(name, address, phone);
             if (result != null) {
                 System.out.println(result);
             } else {
@@ -141,7 +144,7 @@ public class ProductState {
 
     public void showSupplier() {
 
-        Iterator<Supplier> allSuppliers = warehouse.getSuppliers();
+        Iterator<Supplier> allSuppliers = warehouse.getManufacturers();
         System.out.println("---------------------------------------------------------------");
         while (allSuppliers.hasNext()){
             Supplier supplier = allSuppliers.next();
@@ -152,19 +155,19 @@ public class ProductState {
 
     public void listSuppliersOfProduct()
     {
-        Supplier supplier;
+        Manufacturer manufacturer;
         float price;
         String pID = getToken("Enter the product ID: ");
-        Product product = warehouse.searchProduct(pID);
+        Product product = warehouse.findProduct(pID);
         if (product != null)
         {
-            Iterator<Supplier> s_traversal = warehouse.getSuppliersOfProduct(product);
+            Iterator<Manufacturer> s_traversal = warehouse.getSuppliersOfProduct(product);
             Iterator<Float> price_traversal = warehouse.getProductPrices(product);
             while (((s_traversal.hasNext())) && ((price_traversal.hasNext())))
             {
-                supplier = s_traversal.next();
+                manufacturer = s_traversal.next();
                 price = price_traversal.next();
-                System.out.println("Supplier: " + supplier.getSupplierName() + ". Supply Price: $" + price);
+                System.out.println("Supplier: " + manufacturer.getName() + ". Supply Price: $" + price);
             }
         }
         else
@@ -175,8 +178,8 @@ public class ProductState {
     public void listProductsBySupplier()
     {
         String s = getToken("Please enter supplier ID: ");
-        Supplier supplier = warehouse.searchSupplier(s);
-        if (supplier != null)
+        Manufacturer manufacturer = warehouse.findManufacturer(s);
+        if (manufacturer != null)
         {
             Product p_temp;
             Iterator<Product> p_traversal = warehouse.getProductBySupplier(supplier);
@@ -206,6 +209,7 @@ public class ProductState {
         else if (choice == 2){
 
 
+
         }
 
         else{
@@ -228,7 +232,7 @@ public class ProductState {
                 case ADD_PRODUCT              :  addProduct();
                     break;
 
-                case ADD_SUPPLIER          :  addSupplier();
+                case ADD_SUPPLIER          :  addManufacturer();
                     break;
 
                 case SHOW_SUPPLIER_LIST  :  showSupplier();
@@ -252,8 +256,12 @@ public class ProductState {
         }
     }
 
+    public void run() {
+        process();
+    }
+
     public static void main(String[] args) {
-        ProductState.instance().process();
+        ManagerState.instance().process();
     }
 
 }
