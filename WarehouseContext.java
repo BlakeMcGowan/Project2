@@ -7,7 +7,7 @@ public class WarehouseContext {
     private static Warehouse warehouse;
     private static WarehouseContext context;
     private int currentUser;
-    private String userID;
+    static private String userID;
     private BufferedReader reader = new BufferedReader(new
             InputStreamReader(System.in));
     public static final int IsClerk = 0;
@@ -57,13 +57,13 @@ public class WarehouseContext {
     public void setLogin(int code)
     {currentUser = code;}
 
-    public void setUser(String uID)
+    static public void setUser(String uID)
     { userID = uID;}
 
     public int getLogin()
     { return currentUser;}
 
-    public String getUser()
+    static public String getUser()
     { return userID;}
 
     private WarehouseContext() { //constructor

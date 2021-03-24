@@ -17,12 +17,43 @@ public class ClientState extends WarehouseState{
     private static final int SHOW_WAIT_LIST = 5;
     private static final int HELP = 6;
     
+    private ClientState() {
+        if (yesOrNo("Look for saved data and  use it?")) {
+            retrieve();
+        } else {
+            warehouse = Warehouse.instance();
+        }
+    }
+
+    private void retrieve() {
+        try {
+            Warehouse tempWarehouse = Warehouse.retrieve();
+            if (tempWarehouse != null) {
+                System.out.println("The warehouse has been successfully retrieved from the file WarehouseData \n" );
+                warehouse = tempWarehouse;
+            } else {
+                System.out.println("File doesn't exist; creating new warehouse" );
+                warehouse = Warehouse.instance();
+            }
+        } catch(Exception cnfe) {
+            cnfe.printStackTrace();
+        }
+    }
+
     public static ClientState instance() {
         if (clientState == null) {
             return clientState = new ClientState();
         } else {
             return clientState;
         }
+    }
+
+    private boolean yesOrNo(String prompt) {
+        String more = getToken(prompt + " (Y|y)[es] or anything else for no");
+        if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
+            return false;
+        }
+        return true;
     }
 
     public void help() {
@@ -72,28 +103,25 @@ public class ClientState extends WarehouseState{
             switch (command) {
 
 
-                case LOGOUT              :  addProduct();
+                case LOGOUT              :  logout();
                     break;
 
-                case ADD_SUPPLIER          :  addSupplier();
+                case SHOW_CLIENT_INFO          :  showClientInfo();
                     break;
 
-                case SHOW_SUPPLIER_LIST  :  showSupplier();
+                case SHOW_PRODUCT_LIST  :  showProductList();
                     break;
 
-                case SUPPLIERS_FOR_PRODUCT :  listSuppliersOfProduct();
+                case SHOW_CLIENT_TRANSACTIONS :  showClientTransactions();
+                    break;
+
+                case MODIFY_SHOPPING_CART :  modifyShoppingCart();
+                    break;
+
+                case SHOW_WAIT_LIST :  showWaitList();
                     break;
 
                 case HELP               :  help();
-                    break;
-
-                case PRODUCTS_FOR_SUPPLIERS :  listProductsBySupplier();
-                    break;
-
-                case UPDATE_PRODUCTS : updateProducts();
-                    break;
-
-                case BECOME_SALESCLERK : becomeSalesclerk();
                     break;
             }
         }
@@ -102,5 +130,36 @@ public class ClientState extends WarehouseState{
 	public void run() {
 		process();
 	}
+
+    private void logout()
+    {
+        WarehouseContext.instance().setLogin(WarehouseContext.IsUser);
+        //WarehouseContext.instance().changeState(); Needs state for login state
+    }
+
+    private void showClientInfo()
+    {
+        Client client = warehouse.getClient(WarehouseContext.getUser());
+        System.out.println(client.toString());
+    }
+
+    private void showProductList()
+    {
+        //functionality for displaying the list of products
+    }
     
+    private void showClientTransactions()
+    {
+        //warehouse.getTransactions(); pass user's id as paramter
+    }
+
+    private void modifyShoppingCart()
+    {
+        //WarehouseContext.instance().changeState(); Needs state for shopping cart
+    }
+
+    private void showWaitList()
+    {
+        //functionaility for showing client's waitlist
+    }
 }
