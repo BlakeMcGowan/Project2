@@ -13,15 +13,15 @@ public class Shipment implements Serializable {
     }
 
     public String getId() {
-        return m.getId();
+        return s.getId();
     }
 
     public String supplierName() {
-        return m.getName();
+        return s.getName();
     }
 
     public String supplierId() {
-        return m.getId();
+        return s.getId();
     }
 
     public double supplierPrice() {
