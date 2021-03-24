@@ -141,16 +141,18 @@ public class ClientState extends WarehouseState{
     {
         Client client = warehouse.getClient(WarehouseContext.getUser());
         System.out.println(client.toString());
+        System.out.println(client.toStringBalance());
     }
 
     private void showProductList()
     {
-        //functionality for displaying the list of products
+        System.out.println(warehouse.ProductListToString());
     }
     
     private void showClientTransactions()
     {
-        //warehouse.getTransactions(); pass user's id as paramter
+        Client client = warehouse.getClient(WarehouseContext.getUser());
+        //transactions to string out
     }
 
     private void modifyShoppingCart()

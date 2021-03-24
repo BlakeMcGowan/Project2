@@ -8,7 +8,7 @@ public class Client implements Serializable {
     private String address;
     private String phone;
     private String id;
-    private List transactions = new LinkedList();
+    public List transactions = new LinkedList();
     private double balance;
     private Calendar orderDate;
 

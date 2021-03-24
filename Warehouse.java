@@ -54,6 +54,11 @@ public class Warehouse implements Serializable {
         return null;
     }
 
+    public String ProductListToString()
+    {
+        return productList.toString();
+    }
+
     public Iterator getProducts() {
         return productList.getProducts();
     }
