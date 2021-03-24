@@ -1,7 +1,7 @@
 public abstract class WarehouseState {
-    protected static LibContext context;
+    protected static WarehouseContext context;
     protected WarehouseState() {
-        //context = LibContext.instance();
+        context = WarehouseContext.instance();
     }
     public abstract void run();
 }
