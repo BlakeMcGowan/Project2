@@ -21,7 +21,7 @@ public class Warehouse implements Serializable {
 
     public static Warehouse instance() {
         if (warehouse == null) {
-            ClientIdServer.instance(); // instantiate all singletons
+            ClientIDServer.instance(); // instantiate all singletons
             SupplierIDServer.instance(); // instantiate all singletons
             return (warehouse = new Warehouse());
         } else {
@@ -91,7 +91,7 @@ public class Warehouse implements Serializable {
             FileInputStream file = new FileInputStream("ManagerData");
             ObjectInputStream input = new ObjectInputStream(file);
             input.readObject();
-            ClientIdServer.retrieve(input);
+            ClientIDServer.retrieve(input);
             SupplierIDServer.retrieve(input);
             return warehouse;
         } catch (IOException ioe) {
@@ -108,7 +108,7 @@ public class Warehouse implements Serializable {
             FileOutputStream file = new FileOutputStream("ManagerData");
             ObjectOutputStream output = new ObjectOutputStream(file);
             output.writeObject(warehouse);
-            output.writeObject(ClientIdServer.instance());
+            output.writeObject(ClientIDServer.instance());
             output.writeObject(SupplierIDServer.instance());
 
             return true;
@@ -248,6 +248,18 @@ public class Warehouse implements Serializable {
     public void addSupplierToProduct(Product p, Supplier m, double price) {
         Shipment s = new Shipment(m, price);
         p.addToSupplierList(s);
+    }
+
+    public Iterator<Supplier> getSuppliersOfProducts (Product p){
+        return p.getSupplierList();
+    }
+
+    public Iterator<Product> getProductBySupplier (Supplier s){
+        return s.getProducts();
+    }
+
+    public Iterator<Float> getProductPrices (Product p){
+        return p.getPrices();
     }
 
     public void deleteSupplierFromProduct(Product p, Supplier m) {
