@@ -220,7 +220,7 @@ public class ManagerState extends WarehouseState{
     }
 
     public void becomeSalesclerk(){
-        (WarehouseContext.instance()).changeState(0);
+        (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE);
     }
 
     public void process() {
