@@ -77,7 +77,7 @@ public class LoginState extends WarehouseState{
         System.out.println("Enter a command \n"+
                 "input 1 to login as a manager\n" +
                 "input 2 to login as clerk\n"+
-                "input 3 to exit the system\n");
+                "input 3 to view the default panel\n");
         while ((command = getCommand()) != EXIT) {
 
             switch (command) {
