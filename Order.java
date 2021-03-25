@@ -5,10 +5,22 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String clientId;
+    private Supplier supplier;
+    private Boolean RECEIVED_FLAG;
     private List itemList = new LinkedList();
+    private List<Product> products = new LinkedList<Product>();
+    private List<Integer> quantities = new LinkedList<Integer>();
 
     public Order(String clientId) {
         this.clientId = clientId;
+    }
+    public boolean getOrderStatus(){
+        return RECEIVED_FLAG;
+    }
+    
+    public boolean receiveOrder(){
+        this.RECEIVED_FLAG = true;
+        return RECEIVED_FLAG;
     }
 
     public Iterator getItemList() {
@@ -21,6 +33,21 @@ public class Order implements Serializable {
 
     public void addItem(Item i) {
         itemList.add(i);
+    }
+
+    public Iterator<Product> getProds()
+    {
+      return products.iterator();
+    }
+  
+    public Iterator<Integer> getQs()
+    {
+      return quantities.iterator();
+    }
+  
+    public Supplier getSupplier()
+    {
+      return supplier;
     }
 
     public String getClientId() {

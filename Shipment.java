@@ -4,6 +4,8 @@ public class Shipment implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Supplier s;
+    private Supplier supp;
+    private int quantity;
     private double price;
 
     public Shipment(Supplier s, double p) {
@@ -20,12 +22,27 @@ public class Shipment implements Serializable {
         return s.getName();
     }
 
+    public Supplier getSupplier()
+    {
+      return supp;
+    }
+
     public String supplierId() {
         return s.getId();
     }
 
     public double supplierPrice() {
         return price;
+    }
+
+    public int getQuantity()
+    {
+      return quantity;
+    }
+
+    public void setNewQuantity(int q)
+    {
+      this.quantity = quantity - q;
     }
 
     @Override

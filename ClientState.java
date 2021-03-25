@@ -133,8 +133,21 @@ public class ClientState extends WarehouseState{
 
     private void logout()
     {
-        WarehouseContext.instance().setLogin(WarehouseContext.IsUser);
-        //WarehouseContext.instance().changeState(); Needs state for login state
+        if ((WarehouseContext.instance()).getLogin() == WarehouseContext.IsManager) {
+            System.out.println(" going to sales \n ");
+            (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE); // exit with a code 1
+
+        } else if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk) {
+            System.out.println(" going to sales \n");
+            (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE); // exit with a code 2
+
+        } else if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClient) {
+            System.out.println(" going to login \n");
+            (WarehouseContext.instance()).changeState(WarehouseContext.LOGIN_STATE);
+
+        } else {
+            (WarehouseContext.instance()).changeState(WarehouseContext.CLIENT_STATE); // exit code 2, indicates error
+        }
     }
 
     private void showClientInfo()

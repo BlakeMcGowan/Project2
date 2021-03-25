@@ -72,7 +72,7 @@ public class LoginState extends WarehouseState{
 //        else
 //            System.out.println("Invalid user id.");
         //bug hunting. need to make sure to use the userID to log into ClientState
-        (WarehouseContext.instance()).setLogin(WarehouseContext.IsUser);
+        (WarehouseContext.instance()).setLogin(WarehouseContext.IsClient);
         (WarehouseContext.instance()).changeState(1);
     }
 
