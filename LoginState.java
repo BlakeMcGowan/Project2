@@ -63,29 +63,20 @@ public class LoginState extends WarehouseState{
     }
 
     private void user(){
-        String userID = getToken("Please input the user id: ");
-//        if (Warehouse.instance().searchMembership(userID) != null){
-//            (WarehouseContext.instance()).setLogin(WarehouseContext.IsUser);
-//            (WarehouseContext.instance()).setUser(userID);
-//            (WarehouseContext.instance()).changeState(1);
-//        }
-//        else
-//            System.out.println("Invalid user id.");
-        //bug hunting. need to make sure to use the userID to log into ClientState
         (WarehouseContext.instance()).setLogin(WarehouseContext.IsClient);
         (WarehouseContext.instance()).changeState(1);
     }
 
     private void manager(){
         (WarehouseContext.instance()).setLogin(WarehouseContext.IsManager);
-        (WarehouseContext.instance()).changeState(2);
+        (WarehouseContext.instance()).changeState(WarehouseContext.MANAGER_STATE)
     }
 
     public void process() {
         int command;
-        System.out.println("Enter a command"+
-                "input 1 to login as a clerkn" +
-                "input 2 to login as user\n"+
+        System.out.println("Enter a command \n"+
+                "input 1 to login as a clerk\n" +
+                "input 2 to login as client\n"+
                 "input 3 to exit the system\n");
         while ((command = getCommand()) != EXIT) {
 
@@ -102,7 +93,7 @@ public class LoginState extends WarehouseState{
             System.out.println("Input 0 to login as Manager\n"+
             "input 1 to login as clerk\n" +
             "input 2 to login as client\n"+
-            "input 3 to exit the system\n");
+            "input 1 to exit the system\n");
         }
         (WarehouseContext.instance()).changeState(2);
     }
