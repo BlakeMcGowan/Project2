@@ -323,6 +323,9 @@ public class Clerkstate extends WarehouseState {
     (WarehouseContext.instance()).changeState(0); 
   }
  
+  public void switchtoUser(){
+    (WarehouseContext.instance()).changeState(WarehouseContext.CLIENT_STATE);
+}
 
   public void process() {
     int command;
@@ -345,6 +348,8 @@ public class Clerkstate extends WarehouseState {
                                 break;    
         case RECEIVE_A_SHIPMENT   : ReceiveShipment();
                                   break;
+        case USERMENU   : switchtoUser();
+                                   break;
         case HELP:              help();
                                 break;
       }
