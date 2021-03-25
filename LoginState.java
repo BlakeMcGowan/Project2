@@ -85,8 +85,8 @@ public class LoginState extends WarehouseState{
         int command;
         System.out.println("Input 0 to login as Manager\n"+
                 "input 1 to login as clerk\n" +
-                "input 2 to exit the client\n"+
-                "input 3 to exixt the system\n");
+                "input 2 to login as client\n"+
+                "input 3 to exit the system\n");
         while ((command = getCommand()) != EXIT) {
 
             switch (command) {
@@ -101,8 +101,8 @@ public class LoginState extends WarehouseState{
             } 
             System.out.println("Input 0 to login as Manager\n"+
             "input 1 to login as clerk\n" +
-            "input 2 to exit the client\n"+
-            "input 3 to exixt the system\n");
+            "input 2 to login as client\n"+
+            "input 3 to exit the system\n");
         }
         (WarehouseContext.instance()).changeState(2);
     }
