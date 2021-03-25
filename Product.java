@@ -10,6 +10,8 @@ public class Product implements Serializable {
     private double price;
     private int quantity;
     private List<Float> productPrices = new LinkedList<Float>();
+    private List<Shipment> productSupplier = new LinkedList<Shipment>();
+    private List<Wait> waitlistedClients = new LinkedList<Wait>();
     private List waitList = new LinkedList();
 
     public Product(String title, String id, double price, int quantity) {
@@ -31,7 +33,9 @@ public class Product implements Serializable {
         return supplierList.iterator();
     }
 
-
+    public Iterator<Shipment> getSupplier() {
+        return productSupplier.iterator();
+    }
 
     public Iterator getPrices(){
         return productPrices.iterator();
@@ -59,6 +63,11 @@ public class Product implements Serializable {
 
     public void addToWaitList(Wait item) {
         waitList.add(item);
+    }
+
+    public Iterator<Wait> getWaitlistedClients()
+    {
+      return waitlistedClients.iterator();
     }
 
     public void addToSupplierList(Shipment supplier) {
@@ -94,6 +103,20 @@ public class Product implements Serializable {
         }
         return null;
     }
+
+    public Shipment SearchSupplyList(Supplier shipment)
+    {
+        int i = 0;
+        for (; i <= productSupplier.size()-1; i++)
+        {
+            if((productSupplier.get(i).getSupplier()) == shipment)
+            {
+                return productSupplier.get(i);
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public String toString() {

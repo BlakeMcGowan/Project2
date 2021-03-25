@@ -2,12 +2,17 @@ import java.io.*;
 
 public class Wait implements Serializable {
 
+    private Product product;
     private final Client client;
     private int quantity;
 
     public Wait(Client member, int q) {
         this.client = member;
         this.quantity = q;
+    }
+
+    public Product getProduct(){
+        return product;
     }
 
     public Client getClient() {
@@ -24,6 +29,6 @@ public class Wait implements Serializable {
 
     @Override
     public String toString() {
-        return "Client Id: " + client.getId() + " quantity: " + quantity;
+        return "Client Id: " + client.getId() + "product" + product + " quantity: " + quantity;
     }
 }

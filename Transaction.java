@@ -8,6 +8,9 @@ public class Transaction implements Serializable {
     private String description;
     private double balance;
 
+    public Transaction(double balance2) {
+    }
+
     public void Transaction(Date date, String description, double balance) {
         this.date = date;
         this.description = description;

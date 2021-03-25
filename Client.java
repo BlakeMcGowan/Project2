@@ -9,6 +9,7 @@ public class Client implements Serializable {
     private String phone;
     private String id;
     public List transactions = new LinkedList();
+    private List<Wait> waitlistedProducts = new LinkedList<Wait>();
     private double balance;
     private Calendar orderDate;
 
@@ -77,6 +78,26 @@ public class Client implements Serializable {
     public boolean equals(String id) {
         return this.id.equals(id);
     }
+
+    public Wait searchWaitListOnProduct(Product p)
+	{
+		Iterator<Wait> iterator = waitlistedProducts.iterator();
+		Wait w;
+		while (iterator.hasNext())
+		{
+			w = iterator.next();
+			if (w.getProduct() == p)
+			{
+				return w;
+			}
+		}
+		return null;
+	}
+
+    public boolean removeWaitlistedProduct(Wait w)
+	{
+		return waitlistedProducts.remove(w);
+	}
 
     @Override
     public String toString() {

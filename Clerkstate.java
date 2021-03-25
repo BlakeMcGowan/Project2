@@ -120,7 +120,7 @@ public class Clerkstate extends WarehouseState {
       }
     }
     Client result;
-    result = warehouse.addClient(Name, Phone, Address, Billing);
+    result = warehouse.addMember(Name, Address, Phone);
     if (result == null)
     {
       System.out.println("Could not add client.");
@@ -134,8 +134,11 @@ public class Clerkstate extends WarehouseState {
   public void addProduct()
   {
     String Name = getToken("Enter product name: ");
+    String id = getToken("Enter product id: ");
+    double price = getNumber("Enter product price: ");
+    int quantity = getNumber("Enter product quantity: ");
     Product result;
-    result = warehouse.addProduct(Name);
+    result = warehouse.addProduct(Name, id, price, quantity);
     if (result == null)
     {
       System.out.println("Could not add product.");
@@ -179,7 +182,7 @@ public class Clerkstate extends WarehouseState {
   }
    
   public void showClient()   {
-    Iterator<Client>  allClients = warehouse.getClients();
+    Iterator<Client>  allClients = warehouse.getMembers();
     if(allClients.hasNext()==false){
       System.out.println("No Clients exist in the system. \n");
     }else{
@@ -198,16 +201,16 @@ public class Clerkstate extends WarehouseState {
   {
     Double price;
     String pID = getToken("Enter the product ID: ");
-    Product product = warehouse.searchProduct(pID);
+    Product product = warehouse.findProduct(pID);
     System.out.println("-----------------------------------------------");
     if (product != null)
     {
-      shipment shipment;
-      Iterator<shipment> allSuppliers = warehouse.getSuppliersOfProduct(product);
+      Shipment shipment;
+      Iterator<Shipment> allSuppliers = warehouse.getSuppliersOfProduct(product);
       while ((allSuppliers.hasNext()) != false)
       {
         shipment = allSuppliers.next();
-        System.out.println("Supplier: " + shipment.getSupplier().getSupplierName() + ". Price: $" + shipment.getPrice() + " Quantity: " + shipment.getQuantity());
+        System.out.println("Supplier: " + shipment.getSupplier().getName() + ". Price: $" + shipment.supplierPrice() + " Quantity: " + shipment.getQuantity());
       }
       System.out.println("-----------------------------------------------\n");
     }
@@ -220,7 +223,7 @@ public class Clerkstate extends WarehouseState {
   public void listProductsBySupplier()
   {
     String s = getToken("Please enter supplier ID: ");
-    Shipment supplier = warehouse.searchSupplier(s);
+    Supplier supplier = warehouse.findSupplier(s);
     if (supplier != null)
     {
       Product p_temp;
@@ -228,7 +231,7 @@ public class Clerkstate extends WarehouseState {
       while (p_traversal.hasNext() != false)
       {
           p_temp = p_traversal.next();
-          System.out.println(p_temp.getSupplier());
+          System.out.println(p_temp.getSupplierList());
       }
     }
     else
@@ -242,7 +245,7 @@ public class Clerkstate extends WarehouseState {
     int O_count = 1;
     String oID = getToken("Enter the order ID: ");
     Order order ;
-    while((order = warehouse.searchSuppOrders(oID)) == null){
+    while((order = warehouse.findOrder(oID)) == null){
       System.out.println("No such order found. ");
       if(O_count++ == 3){
         System.out.println("You have reached the maximum try. Try next time.\n");
@@ -256,7 +259,7 @@ public class Clerkstate extends WarehouseState {
       return;
     }
 
-    Shipment supplier = order.getSupplier();
+    Supplier supplier = order.getSupplier();
     Iterator<Product> allProducts = order.getProds();
     Product p;
     Iterator<Integer> quantities = order.getQs();
@@ -289,7 +292,7 @@ public class Clerkstate extends WarehouseState {
         {
           shipment.setNewQuantity(-1 * quant);
           //fullfill the waitlist first
-          warehouse.fulfillWaitList(prod, quant, shipment);
+          warehouse.FulfillWaitlist(prod, quant, shipment);
         }
         else
         {
@@ -299,9 +302,10 @@ public class Clerkstate extends WarehouseState {
       }
       order.receiveOrder();//shipment has been received
     }
-    System.out.println("Remainig products successfully added to inventory.\n");
+    System.out.println("Remaining products successfully added to inventory.\n");
   }
 
+  /*
   public void usermenu()
   {
     String userID = getToken("Please input the user id: ");
@@ -312,6 +316,7 @@ public class Clerkstate extends WarehouseState {
     else 
       System.out.println("Invalid user id."); 
   }
+  */
 
   public void logout()
   {
@@ -340,8 +345,6 @@ public class Clerkstate extends WarehouseState {
                                 break;    
         case RECEIVE_A_SHIPMENT   : ReceiveShipment();
                                   break;
-        case USERMENU:          usermenu();
-                                break;
         case HELP:              help();
                                 break;
       }

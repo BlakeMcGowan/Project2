@@ -21,7 +21,7 @@ public class Warehouse implements Serializable {
 
     public static Warehouse instance() {
         if (warehouse == null) {
-            ClientIDServer.instance(); // instantiate all singletons
+            ClientIdServer.instance(); // instantiate all singletons
             SupplierIDServer.instance(); // instantiate all singletons
             return (warehouse = new Warehouse());
         } else {
@@ -88,10 +88,10 @@ public class Warehouse implements Serializable {
 
     public static Warehouse retrieve() {
         try {
-            FileInputStream file = new FileInputStream("ManagerData");
+            FileInputStream file = new FileInputStream("WarehouseData");
             ObjectInputStream input = new ObjectInputStream(file);
             input.readObject();
-            ClientIDServer.retrieve(input);
+            ClientIdServer.retrieve(input);
             SupplierIDServer.retrieve(input);
             return warehouse;
         } catch (IOException ioe) {
@@ -105,10 +105,10 @@ public class Warehouse implements Serializable {
 
     public static boolean save() {
         try {
-            FileOutputStream file = new FileOutputStream("ManagerData");
+            FileOutputStream file = new FileOutputStream("WarehouseData");
             ObjectOutputStream output = new ObjectOutputStream(file);
             output.writeObject(warehouse);
-            output.writeObject(ClientIDServer.instance());
+            output.writeObject(ClientIdServer.instance());
             output.writeObject(SupplierIDServer.instance());
 
             return true;
@@ -250,8 +250,15 @@ public class Warehouse implements Serializable {
         p.addToSupplierList(s);
     }
 
+    public Shipment searchProductSupplier(Product product, Supplier supp){
+        return product.SearchSupplyList(supp);
+    }
     public Iterator<Supplier> getSuppliersOfProducts (Product p){
         return p.getSupplierList();
+    }
+
+    public Iterator<Shipment> getSuppliersOfProduct (Product p){
+        return p.getSupplier();
     }
 
     public Iterator<Product> getProductBySupplier (Supplier s){
@@ -269,14 +276,36 @@ public class Warehouse implements Serializable {
         p.deleteFromSupplierList(s);
     }
 
-    public boolean fulfillWaitList(Product p, Client c, int q) {
-        if (p.fulfillOrder(c, q)) {
-            updateClientBalance(c.getId(), p.getPrice() * q);
-            return true;
-        } else {
-            return false;
+    public void FulfillWaitlist(Product p, int NewQ, Shipment shipment){
+        Iterator<Wait> iterator = p.getWaitlistedClients();
+        Wait w;
+        Client c;
+        int WaitlistedQ;
+        while ((iterator.hasNext()) && (NewQ >= 0))
+        {
+          w = iterator.next();
+          WaitlistedQ = w.getQuantity();
+          c = w.getClient();
+          if ((NewQ - WaitlistedQ) >= 0)
+          {
+            NewQ = NewQ - WaitlistedQ;
+            double price = WaitlistedQ * shipment.supplierPrice();
+            c.subBalance(price);
+            iterator.remove(); 
+            Wait Wlist = c.searchWaitListOnProduct(p);
+            boolean success = c.removeWaitlistedProduct(Wlist);
+          }
+          else
+          {
+            double price = NewQ * shipment.supplierPrice();
+            w.updateQuantity(WaitlistedQ - NewQ);
+            NewQ = NewQ - NewQ;
+            c.subBalance(price);
+          }
+    
         }
-    }
+        shipment.setNewQuantity(shipment.getQuantity() - NewQ);
+      }
 
     public String toString() {
         return warehouse + "\n" + clientList;

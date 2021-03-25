@@ -10,42 +10,23 @@ public class WarehouseContext {
     private BufferedReader reader = new BufferedReader(new
             InputStreamReader(System.in));
     public static final int IsClerk = 0;
-    public static final int IsUser = 1;
+    public static final int IsClient = 1;
     public static final int IsManager = 2;
+    public static final int MANAGER_STATE= 0;
+    public static final int CLERK_STATE = 1;
+    public static final int CLIENT_STATE = 2;
+    public static final int LOGIN_STATE = 3;
     private WarehouseState[] states;
     private int[][] nextState;
-
-    public String getToken(String prompt) {
-        do {
-            try {
-                System.out.println(prompt);
-                String line = reader.readLine();
-                StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
-                if (tokenizer.hasMoreTokens()) {
-                    return tokenizer.nextToken();
-                }
-            } catch (IOException ioe) {
-                System.exit(0);
-            }
-        } while (true);
-    }
-
-    private boolean yesOrNo(String prompt) {
-        String more = getToken(prompt + " (Y|y)[es] or anything else for no");
-        if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
-            return false;
-        }
-        return true;
-    }
 
     private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
             if (tempWarehouse != null) {
-                System.out.println(" The library has been successfully retrieved from the file LibraryData \n" );
+                System.out.println(" The warehouse has been successfully retrieved from the file WarehouseData \n" );
                 warehouse = tempWarehouse;
             } else {
-                System.out.println("File doesnt exist; creating new library" );
+                System.out.println("File doesnt exist; creating new warehouse" );
                 warehouse = Warehouse.instance();
             }
         } catch(Exception cnfe) {
@@ -66,23 +47,27 @@ public class WarehouseContext {
     { return userID;}
 
     private WarehouseContext() { //constructor
-        System.out.println("In Libcontext constructor");
-        if (yesOrNo("Look for saved data and  use it?")) {
-            retrieve();
-        } else {
-            warehouse = Warehouse.instance();
-        }
+        retrieve();
+        
         // set up the FSM and transition table;
         states = new WarehouseState[4];
-        states[0] = ClientState.instance();
-        states[1] = Clerkstate.instance();
-        states[2] =  LoginState.instance();
-        states[3] =  ManagerState.instance();
+        states[0] =  ManagerState.instance();
+        states[1] =  Clerkstate.instance();
+        states[2] =  ClientState.instance();
+        states[3] =  LoginState.instance();
+
         nextState = new int[4][4];
-        nextState[0][0] = 2;nextState[0][1] = 1;nextState[0][2] = -2;
-        nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;
-        nextState[2][0] = 0;nextState[2][1] = 1;nextState[2][2] = -1;
-        currentState = 2;
+        nextState[MANAGER_STATE][MANAGER_STATE] = -1;
+        nextState[MANAGER_STATE][CLERK_STATE] = CLERK_STATE;
+        nextState[MANAGER_STATE][CLIENT_STATE] = CLIENT_STATE;
+        nextState[MANAGER_STATE][LOGIN_STATE] = LOGIN_STATE;
+
+        nextState[LOGIN_STATE][MANAGER_STATE] = MANAGER_STATE;
+        nextState[LOGIN_STATE][CLERK_STATE] = CLERK_STATE;
+        nextState[LOGIN_STATE][CLIENT_STATE] = CLIENT_STATE;
+        nextState[LOGIN_STATE][LOGIN_STATE] = -1;
+
+        currentState = LOGIN_STATE;
     }
 
     public void changeState(int transition)
@@ -99,7 +84,7 @@ public class WarehouseContext {
 
     private void terminate()
     {
-        if (yesOrNo("Save data?")) {
+        if (IOHelper.yesOrNo("Save data?")) {
             if (warehouse.save()) {
                 System.out.println(" The warehouse has been successfully saved in the file WarehouseData \n" );
             } else {
