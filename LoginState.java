@@ -69,7 +69,7 @@ public class LoginState extends WarehouseState{
 
     private void manager(){
         (WarehouseContext.instance()).setLogin(WarehouseContext.IsManager);
-        (WarehouseContext.instance()).changeState(WarehouseContext.MANAGER_STATE)
+        (WarehouseContext.instance()).changeState(WarehouseContext.MANAGER_STATE);
     }
 
     public void process() {
