@@ -86,7 +86,7 @@ public class Warehouse implements Serializable {
         return order.getItemList();
     }
 
-    public static Warehouse retrieve() {
+   /* public static Warehouse retrieve() {
         try {
             FileInputStream file = new FileInputStream("WarehouseData");
             ObjectInputStream input = new ObjectInputStream(file);
@@ -102,6 +102,7 @@ public class Warehouse implements Serializable {
             return null;
         }
     }
+    */
 
     public static boolean save() {
         try {

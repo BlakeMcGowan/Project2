@@ -24,13 +24,13 @@ public class ManagerState extends WarehouseState{
 
     private ManagerState() {
         if (yesOrNo("Look for saved data and  use it?")) {
-            retrieve();
+        //    retrieve();
         } else {
             warehouse = Warehouse.instance();
         }
     }
 
-    private void retrieve() {
+    /*private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
             if (tempWarehouse != null) {
@@ -43,7 +43,7 @@ public class ManagerState extends WarehouseState{
         } catch(Exception cnfe) {
             cnfe.printStackTrace();
         }
-    }
+    }*/
 
     public String getToken(String prompt) {
         do {

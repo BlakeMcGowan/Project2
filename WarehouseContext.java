@@ -19,7 +19,7 @@ public class WarehouseContext {
     private WarehouseState[] states;
     private int[][] nextState;
 
-    private void retrieve() {
+/*    private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
             if (tempWarehouse != null) {
@@ -33,6 +33,7 @@ public class WarehouseContext {
             cnfe.printStackTrace();
         }
     }
+    */
 
     public void setLogin(int code)
     {currentUser = code;}
@@ -47,7 +48,7 @@ public class WarehouseContext {
     { return userID;}
 
     private WarehouseContext() { //constructor
-        retrieve();
+       // retrieve();
         
         // set up the FSM and transition table;
         states = new WarehouseState[4];

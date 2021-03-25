@@ -19,13 +19,13 @@ public class ClientState extends WarehouseState{
     
     private ClientState() {
         if (yesOrNo("Look for saved data and  use it?")) {
-            retrieve();
+         //   retrieve();
         } else {
             warehouse = Warehouse.instance();
         }
     }
 
-    private void retrieve() {
+    /*private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
             if (tempWarehouse != null) {
@@ -38,7 +38,7 @@ public class ClientState extends WarehouseState{
         } catch(Exception cnfe) {
             cnfe.printStackTrace();
         }
-    }
+    }*/
 
     public static ClientState instance() {
         if (clientState == null) {
