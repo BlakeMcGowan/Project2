@@ -2,9 +2,9 @@ import java.util.*;
 import java.text.*;
 import java.io.*;
 public class LoginState extends WarehouseState{
-    private static final int CLERK_LOGIN = 0;
-    private static final int USER_LOGIN = 1;
-    private static final int MANAGER_LOGIN = 2;
+    private static final int MANAGER_LOGIN = 0;
+    private static final int CLERK_LOGIN = 1;
+    private static final int CLIENT_LOGIN = 2;
     private static final int EXIT = 3;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private WarehouseContext context;
@@ -83,25 +83,26 @@ public class LoginState extends WarehouseState{
 
     public void process() {
         int command;
-        System.out.println("Please input 0 to login as Clerk\n"+
-                "input 1 to login as user\n" +
-                "input 2 to exit the system\n");
+        System.out.println("Input 0 to login as Manager\n"+
+                "input 1 to login as clerk\n" +
+                "input 2 to exit the client\n"+
+                "input 3 to exixt the system\n");
         while ((command = getCommand()) != EXIT) {
 
             switch (command) {
+                case MANAGER_LOGIN:       manager();
+                break;
                 case CLERK_LOGIN:       clerk();
                     break;
-                case USER_LOGIN:        user();
-                    break;
-                case MANAGER_LOGIN:       manager();
+                case CLIENT_LOGIN:        user();
                     break;
                 default:                System.out.println("Invalid choice");
 
-            }
-            System.out.println("Please input 0 to login as Clerk\n"+
-                    "input 1 to login as user\n" +
-                    "input 2 to login as manager\n" +
-                    "input 3 to exit the system\n");
+            } 
+            System.out.println("Input 0 to login as Manager\n"+
+            "input 1 to login as clerk\n" +
+            "input 2 to exit the client\n"+
+            "input 3 to exixt the system\n");
         }
         (WarehouseContext.instance()).changeState(2);
     }
