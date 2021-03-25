@@ -9,9 +9,9 @@ public class WarehouseContext {
     static private String userID;
     private BufferedReader reader = new BufferedReader(new
             InputStreamReader(System.in));
-    public static final int IsClerk = 0;
-    public static final int IsClient = 1;
-    public static final int IsManager = 2;
+    public static final int IsManager = 0;
+    public static final int IsClerk = 1;
+    public static final int IsClient = 2;
     public static final int MANAGER_STATE= 0;
     public static final int CLERK_STATE = 1;
     public static final int CLIENT_STATE = 2;
