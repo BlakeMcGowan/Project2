@@ -55,6 +55,11 @@ public class ClientList implements Serializable {
         }
     }
 
+    public Iterator getClients()
+    {
+        return clients.iterator();
+    }
+
     public Client find(String clientId) {
         for (Iterator iterator = clients.iterator(); iterator.hasNext();) {
             Client client = (Client) iterator.next();
