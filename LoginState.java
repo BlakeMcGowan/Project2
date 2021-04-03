@@ -58,16 +58,37 @@ public class LoginState extends WarehouseState{
     }
 
     private void clerk(){
+        System.out.println("Enter ClerkID \n");
+        try{
+            String line = reader.readLine();
+            WarehouseContext.setClerk(line);
+        } catch (IOException ioe) {
+            System.exit(0);
+        }
         (WarehouseContext.instance()).setLogin(WarehouseContext.IsClerk);
         (WarehouseContext.instance()).changeState(0);
     }
 
     private void user(){
+        System.out.println("Enter ClientID \n");
+        try{
+            String line = reader.readLine();
+            WarehouseContext.setClient(line);
+        } catch (IOException ioe) {
+            System.exit(0);
+        }
         (WarehouseContext.instance()).setLogin(WarehouseContext.IsClient);
         (WarehouseContext.instance()).changeState(1);
     }
 
     private void manager(){
+        System.out.println("Enter ManagerID \n");
+        try{
+            String line = reader.readLine();
+            WarehouseContext.setManager(line);
+        } catch (IOException ioe) {
+            System.exit(0);
+        } 
         (WarehouseContext.instance()).setLogin(WarehouseContext.IsManager);
         (WarehouseContext.instance()).changeState(WarehouseContext.MANAGER_STATE);
     }
