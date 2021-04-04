@@ -12,14 +12,17 @@ public class WarehouseContext {
     static private String ClientID;
     private BufferedReader reader = new BufferedReader(new
             InputStreamReader(System.in));
-    public static final int IsManager = 0;
-    public static final int IsClerk = 1;
-    public static final int IsClient = 2;
+    public static final int IsClerk = 0;
+    public static final int IsClient = 1;
+    public static final int IsManager = 2;
     public static final int MANAGER_STATE= 0;
     public static final int CLERK_STATE = 1;
     public static final int CLIENT_STATE = 2;
     public static final int LOGIN_STATE = 3;
     public static final int SHOPPING_CART_STATE = 4;
+    public static final int QUERY_STATE = 5;
+
+
     private WarehouseState[] states;
     private int[][] nextState;
 
@@ -70,8 +73,8 @@ public class WarehouseContext {
     { return ClientID;}
 
     private WarehouseContext() { //constructor
-       // retrieve();
-        
+        // retrieve();
+
         // set up the FSM and transition table;
         states = new WarehouseState[6];
         states[0] =  ManagerState.instance();
@@ -79,12 +82,16 @@ public class WarehouseContext {
         states[2] =  ClientState.instance();
         states[3] =  LoginState.instance();
         states[4] =  ShoppingCartState.instance();
+        states[5] = QueryState.instance();
+
 
         nextState = new int[6][6];
         nextState[MANAGER_STATE][MANAGER_STATE] = -1;
         nextState[MANAGER_STATE][CLERK_STATE] = CLERK_STATE;
         nextState[MANAGER_STATE][CLIENT_STATE] = CLIENT_STATE;
         nextState[MANAGER_STATE][LOGIN_STATE] = LOGIN_STATE;
+        nextState[CLIENT_STATE][CART_STATE] = CART_STATE;
+        nextState[CLERK_STATE][QUERY_STATE] = QUERY_STATE;
 
         nextState[LOGIN_STATE][MANAGER_STATE] = MANAGER_STATE;
         nextState[LOGIN_STATE][CLERK_STATE] = CLERK_STATE;
@@ -136,6 +143,4 @@ public class WarehouseContext {
     public static void main (String[] args){
         WarehouseContext.instance().process();
     }
-
-
 }

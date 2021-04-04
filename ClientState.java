@@ -16,15 +16,14 @@ public class ClientState extends WarehouseState{
     private static final int MODIFY_SHOPPING_CART = 4;
     private static final int SHOW_WAIT_LIST = 5;
     private static final int HELP = 6;
-    
-    /*private ClientState() {
-        if (yesOrNo("Look for saved data and  use it?")) {
-         //   retrieve();
-        } else {
-            warehouse = Warehouse.instance();
-        }
-    }
-    */
+
+//    private ClientState() {
+//        if (yesOrNo("Look for saved data and  use it?")) {
+//            //   retrieve();
+//        } else {
+//            warehouse = Warehouse.instance();
+//        }
+//    }
 
     /*private void retrieve() {
         try {
@@ -126,18 +125,18 @@ public class ClientState extends WarehouseState{
         logout();
     }
 
-	public void run() {
-		process();
-	}
+    public void run() {
+        process();
+    }
 
     private void logout()
     {
         if ((WarehouseContext.instance()).getLogin() == WarehouseContext.IsManager) {
-            System.out.println(" going to clerk \n ");
+            System.out.println(" going to sales \n ");
             (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE); // exit with a code 1
 
         } else if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk) {
-            System.out.println(" going to clerk \n");
+            System.out.println(" going to sales \n");
             (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE); // exit with a code 2
 
         } else if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClient) {
@@ -160,7 +159,7 @@ public class ClientState extends WarehouseState{
     {
         System.out.println(warehouse.ProductListToString());
     }
-    
+
     private void showClientTransactions()
     {
         Client client = warehouse.getClient(WarehouseContext.getUser());
@@ -170,6 +169,7 @@ public class ClientState extends WarehouseState{
     private void modifyShoppingCart()
     {
         (WarehouseContext.instance()).changeState(4);
+
     }
 
     private void showWaitList()
