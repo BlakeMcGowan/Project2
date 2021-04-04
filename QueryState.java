@@ -64,7 +64,7 @@ public class QueryState extends WarehouseState {
 
     public void displayClients(){
 
-        Iterator<Client> allClient = warehouse.getClients();
+        Iterator<Client> allClient = warehouse.getMembers();
         System.out.println("---------------------------------------------------------------");
         while (allClient.hasNext()){
             Client client = allClient.next();
@@ -76,7 +76,7 @@ public class QueryState extends WarehouseState {
 
     public void clientsWithBalance(){
 
-        Iterator <Client> unpaidClient =  warehouse.getClients();
+        Iterator <Client> unpaidClient =  warehouse.getMembers();
         System.out.println("---------------------------------------------------------------");
         while (unpaidClient.hasNext()){
             Client client = unpaidClient.next();
