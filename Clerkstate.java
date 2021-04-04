@@ -320,10 +320,33 @@ public class Clerkstate extends WarehouseState {
   }
   */
 
-    public void logout()
-    {
-        (WarehouseContext.instance()).changeState(0);
+
+  public void logout()
+  {
+    if ((WarehouseContext.instance()).getLogin() == WarehouseContext.IsManager) {
+      System.out.println(" going to Manager \n ");
+      (WarehouseContext.instance()).changeState(WarehouseContext.MANAGER_STATE); // exit with a code 1
+
+    } else if (WarehouseContext.instance().getLogin() == WarehouseContext.IsClerk) {
+      System.out.println(" going to login \n");
+      (WarehouseContext.instance()).changeState(WarehouseContext.LOGIN_STATE); // exit with a code 2
+
+    } else {
+      (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE); // exit code 2, indicates error
+    } 
+  }
+ 
+  public void switchtoUser(){
+    System.out.println("Enter ClientID \n");
+    try{
+      String line = reader.readLine();
+      WarehouseContext.setClient(line);
+    } catch (IOException ioe) {
+      System.exit(0);
     }
+    (WarehouseContext.instance()).changeState(WarehouseContext.CLIENT_STATE);
+  }
+
 
     public void querySystem(){
         WarehouseContext.instance().changeState(WarehouseContext.QUERY_STATE);

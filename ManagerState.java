@@ -220,6 +220,13 @@ public class ManagerState extends WarehouseState{
     }
 
     public void becomeSalesclerk(){
+        System.out.println("Enter ClerkID \n");
+        try{
+            String line = reader.readLine();
+            WarehouseContext.setClerk(line);
+        } catch (IOException ioe) {
+            System.exit(0);
+        }
         (WarehouseContext.instance()).changeState(WarehouseContext.CLERK_STATE);
     }
 
@@ -255,9 +262,16 @@ public class ManagerState extends WarehouseState{
                     break;
             }
         }
+        logout();
     }
 
     public void run() {
         process();
+    }
+
+    private void logout()
+    {
+        System.out.println(" going to login \n");
+        (WarehouseContext.instance()).changeState(WarehouseContext.LOGIN_STATE);
     }
 }

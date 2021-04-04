@@ -103,9 +103,6 @@ public class ClientState extends WarehouseState{
             switch (command) {
 
 
-                case LOGOUT              :  logout();
-                    break;
-
                 case SHOW_CLIENT_INFO          :  showClientInfo();
                     break;
 
@@ -125,6 +122,7 @@ public class ClientState extends WarehouseState{
                     break;
             }
         }
+        logout();
     }
 
     public void run() {
@@ -170,7 +168,8 @@ public class ClientState extends WarehouseState{
 
     private void modifyShoppingCart()
     {
-        WarehouseContext.instance().changeState(WarehouseContext.CART_STATE);
+        (WarehouseContext.instance()).changeState(4);
+
     }
 
     private void showWaitList()

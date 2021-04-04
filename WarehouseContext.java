@@ -7,6 +7,9 @@ public class WarehouseContext {
     private static WarehouseContext context;
     private int currentUser;
     static private String userID;
+    static private String ManagerID;
+    static private String ClerkID;
+    static private String ClientID;
     private BufferedReader reader = new BufferedReader(new
             InputStreamReader(System.in));
     public static final int IsClerk = 0;
@@ -16,8 +19,9 @@ public class WarehouseContext {
     public static final int CLERK_STATE = 1;
     public static final int CLIENT_STATE = 2;
     public static final int LOGIN_STATE = 3;
-    public static final int CART_STATE = 4;
+    public static final int SHOPPING_CART_STATE = 4;
     public static final int QUERY_STATE = 5;
+
 
     private WarehouseState[] states;
     private int[][] nextState;
@@ -50,6 +54,24 @@ public class WarehouseContext {
     public static String getUser()
     { return userID;}
 
+    public static void setManager(String uID)
+    {ManagerID = uID;}
+
+    public static void setClerk(String uID)
+    {ClerkID = uID;}
+
+    public static void setClient(String uID)
+    {ClientID = uID;}
+
+    public static String getManager()
+    { return ManagerID;}
+
+    public static String getClerk()
+    { return ClerkID;}
+
+    public static String getClient()
+    { return ClientID;}
+
     private WarehouseContext() { //constructor
         // retrieve();
 
@@ -59,8 +81,9 @@ public class WarehouseContext {
         states[1] =  Clerkstate.instance();
         states[2] =  ClientState.instance();
         states[3] =  LoginState.instance();
-        states[4] = CartState.instance();
+        states[4] =  ShoppingCartState.instance();
         states[5] = QueryState.instance();
+
 
         nextState = new int[6][6];
         nextState[MANAGER_STATE][MANAGER_STATE] = -1;
@@ -74,6 +97,9 @@ public class WarehouseContext {
         nextState[LOGIN_STATE][CLERK_STATE] = CLERK_STATE;
         nextState[LOGIN_STATE][CLIENT_STATE] = CLIENT_STATE;
         nextState[LOGIN_STATE][LOGIN_STATE] = -1;
+
+        nextState[CLIENT_STATE][SHOPPING_CART_STATE] = SHOPPING_CART_STATE;
+        nextState[SHOPPING_CART_STATE][CLIENT_STATE] = CLIENT_STATE;
 
         currentState = LOGIN_STATE;
     }

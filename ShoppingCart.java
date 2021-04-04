@@ -30,4 +30,15 @@ public class ShoppingCart implements Serializable {
     {
         return items;
     }
+
+    public String ItemsToString()
+    {
+        String cartString = "";
+        Iterator<Entry> i = items.iterator();
+        while (i.hasNext()) {
+            Entry entry = i.next();
+            cartString = cartString + "Item: " + entry.productID + " Quantity: " + entry.count + "\n";
+        }
+        return cartString;
+    }
 }
