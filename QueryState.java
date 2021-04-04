@@ -65,7 +65,6 @@ public class QueryState extends WarehouseState {
     public void displayClients(){
 
         Iterator<Client> allClient = warehouse.getMembers();
-        Iterator<Client> allClient = warehouse.getClients();
         System.out.println("---------------------------------------------------------------");
         while (allClient.hasNext()){
             Client client = allClient.next();
