@@ -23,14 +23,14 @@ public class ManagerState extends WarehouseState{
     private static final int HELP = 9;
 
 
-   /* private ManagerState() {
+    private ManagerState() {
         if (yesOrNo("Look for saved data and  use it?")) {
         //    retrieve();
         } else {
             warehouse = Warehouse.instance();
         }
     }
-    */
+    
 
     /*private void retrieve() {
         try {
