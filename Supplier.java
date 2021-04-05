@@ -36,6 +36,7 @@ public class Supplier implements Serializable {
     public String getName() {
         return name;
     }
+    
 
     public String getPhone() {
         return phone;

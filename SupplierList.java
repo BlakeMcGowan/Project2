@@ -29,6 +29,19 @@ public class SupplierList implements Serializable {
         return null;
     }
 
+    public Supplier search (String supplierId)
+    {
+        for (Iterator iterator = suppliers.iterator(); iterator.hasNext();)
+        {
+            Supplier supplier = (Supplier) iterator.next();
+            if (supplier.getId().equals(supplierId))
+            {
+                return supplier;
+            }
+        }
+        return null;
+    }
+
     public boolean insertSupplier(Supplier member) {
         suppliers.add(member);
         return true;

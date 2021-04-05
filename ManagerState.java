@@ -159,16 +159,16 @@ public class ManagerState extends WarehouseState{
     {
         Double price;
         String pID = getToken("Enter the product ID: ");
-        Product product = warehouse.findProduct(pID);
+        Product product = warehouse.searchProduct(pID);
         System.out.println("-----------------------------------------------");
         if (product != null)
         {
-          Shipment Shipment;
+          Shipment supplierShipment;
           Iterator<Shipment> allSuppliers = warehouse.getSuppliersOfProduct(product);
           while ((allSuppliers.hasNext()) != false)
           {
-            Shipment = allSuppliers.next();
-            System.out.println("Supplier: " + Shipment.getSupplier().getName() + ". Price: $" + Shipment.supplierPrice() + " Quantity: " + Shipment.getQuantity());
+            supplierShipment = allSuppliers.next();
+            System.out.println("Supplier: " + supplierShipment.getSupplier().getName() + ". Price: $" + supplierShipment.supplierPrice() + " Quantity: " + supplierShipment.getQuantity());
           }
           System.out.println("-----------------------------------------------\n");
         }
@@ -176,26 +176,26 @@ public class ManagerState extends WarehouseState{
         {
           System.out.println("Product not found");
         }
-    }
+      }
     public void listProductsBySupplier()
     {
         String s = getToken("Please enter supplier ID: ");
-        Supplier supplier = warehouse.findSupplier(s);
+        Supplier supplier = warehouse.searchSupplier(s);
         if (supplier != null)
         {
-            Product p_temp;
-            Iterator<Product> p_traversal = warehouse.getProductBySupplier(supplier);
-            while (p_traversal.hasNext())
-            {
-                p_temp = p_traversal.next();
-                System.out.println(p_temp.getSupplier());
-            }
+          Product p_temp;
+          Iterator<Product> p_traversal = warehouse.getProductBySupplier(supplier);
+          while (p_traversal.hasNext() != false)
+          {
+              p_temp = p_traversal.next();
+              System.out.println(p_temp.getSupplier());
+          }
         }
         else
         {
-            System.out.println("Supplier doesn't exist");
+          System.out.println("Supplier doesn't exist");
         }
-    }
+      }
 
     public void assignProduct()
     {

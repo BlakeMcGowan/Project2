@@ -99,6 +99,14 @@ public class Warehouse implements Serializable {
         return SupplierList.getSuppliers();
     }
 
+    public Product searchProduct(String productId){
+        return productList.search(productId);
+    }
+
+    public Supplier searchSupplier(String supplierId){
+        return SupplierList.search(supplierId);
+    }
+
     public Iterator getWaitList(String pId) {
         // get product waitlist
         Product p = productList.find(pId);

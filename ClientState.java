@@ -17,13 +17,13 @@ public class ClientState extends WarehouseState{
     private static final int SHOW_WAIT_LIST = 5;
     private static final int HELP = 6;
 
-//    private ClientState() {
-//        if (yesOrNo("Look for saved data and  use it?")) {
-//            //   retrieve();
-//        } else {
-//            warehouse = Warehouse.instance();
-//        }
-//    }
+    private ClientState() {
+        if (yesOrNo("Look for saved data and  use it?")) {
+            //   retrieve();
+        } else {
+            warehouse = Warehouse.instance();
+      }
+   
 
     /*private void retrieve() {
         try {
