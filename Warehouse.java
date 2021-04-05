@@ -54,6 +54,34 @@ public class Warehouse implements Serializable {
         return null;
     }
 
+    public Product assignProdToSupplier (String productId, String supplierId, double price, int quantity){
+        Product product = productList.find(productId);
+        if (product == null)
+        {
+          return null;
+        }
+    
+        Supplier supplier = SupplierList.find(supplierId);
+        if (supplier == null)
+        {
+          return null;
+        }
+    
+        Shipment Ship = product.SearchSupplyList(supplier);
+        if (Ship != null)
+        {
+          return null;
+        }
+        boolean success = product.link(supplier, quantity, price);
+        success = supplier.assignProduct(product);
+        if (success) {
+          return product;
+        }
+        else {
+          return null;
+        }
+      }
+
     public String ProductListToString()
     {
         return productList.toString();

@@ -98,7 +98,7 @@ public class LoginState extends WarehouseState{
         System.out.println("Enter a command \n"+
                 "input 1 to login as a manager\n" +
                 "input 2 to login as clerk\n"+
-                "input 3 to view the default panel\n");
+                "input 3 to login as a client\n");
         while ((command = getCommand()) != EXIT) {
 
             switch (command) {
@@ -111,10 +111,6 @@ public class LoginState extends WarehouseState{
                 default:                System.out.println("Invalid choice");
 
             } 
-            System.out.println("Input 0 to login as Manager\n"+
-            "input 1 to login as clerk\n" +
-            "input 2 to login as client\n"+
-            "input 1 to exit the system\n");
         }
         (WarehouseContext.instance()).changeState(2);
     }

@@ -157,14 +157,29 @@ public class ClientState extends WarehouseState{
 
     private void showProductList()
     {
-        System.out.println(warehouse.ProductListToString());
+        Iterator allProducts = warehouse.getProducts();
+        String prodList = "";
+
+        while (allProducts.hasNext()) {
+            Product product = (Product) (allProducts.next());
+            prodList = prodList + product.toString() + "\n";
+        }
     }
 
     private void showClientTransactions()
     {
-        Client client = warehouse.getClient(WarehouseContext.getUser());
-        //System.out.println(); transactions to string needed
+        String clientId = WarehouseContext.instance().getUser();
+        Client client = warehouse.getClient(clientId);
+        Iterator result = warehouse.getTransactions(clientId);
+        String transList = "";
+
+        while (result.hasNext()) {
+            Transaction transaction = (Transaction) (result.next());
+            transList = transList + transaction.toString() + "\n";
+        }
     }
+
+    
 
     private void modifyShoppingCart()
     {
