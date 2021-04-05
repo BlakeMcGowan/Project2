@@ -157,24 +157,24 @@ public class ManagerState extends WarehouseState{
 
     public void listSuppliersOfProduct()
     {
-        Supplier supplier;
-        float price;
+        Double price;
         String pID = getToken("Enter the product ID: ");
         Product product = warehouse.findProduct(pID);
+        System.out.println("-----------------------------------------------");
         if (product != null)
         {
-            Iterator<Supplier> s_traversal = warehouse.getSuppliersOfProducts(product);
-            Iterator<Float> price_traversal = warehouse.getProductPrices(product);
-            while (((s_traversal.hasNext())) && ((price_traversal.hasNext())))
-            {
-                supplier = s_traversal.next();
-                price = price_traversal.next();
-                System.out.println("Supplier: " + supplier.getName() + ". Supply Price: $" + price);
-            }
+          Shipment Shipment;
+          Iterator<Shipment> allSuppliers = warehouse.getSuppliersOfProduct(product);
+          while ((allSuppliers.hasNext()) != false)
+          {
+            Shipment = allSuppliers.next();
+            System.out.println("Supplier: " + Shipment.getSupplier().getName() + ". Price: $" + Shipment.supplierPrice() + " Quantity: " + Shipment.getQuantity());
+          }
+          System.out.println("-----------------------------------------------\n");
         }
         else
         {
-            System.out.println("Product not found");
+          System.out.println("Product not found");
         }
     }
     public void listProductsBySupplier()
@@ -188,7 +188,7 @@ public class ManagerState extends WarehouseState{
             while (p_traversal.hasNext())
             {
                 p_temp = p_traversal.next();
-                System.out.println(p_temp.getSupplierList());
+                System.out.println(p_temp.getSupplier());
             }
         }
         else
@@ -260,24 +260,37 @@ public class ManagerState extends WarehouseState{
     }
 
     public void updateProducts(){
+        int Scount=1;
+        int Pcount=1;
+        
+        String pID = getToken("Enter product ID: ");
+        Product product;
+        while((product = warehouse.findProduct(pID)) == null){
+          System.out.println("Product doesn't exist.");
+          if(Pcount++ == 3){
+            System.out.println("You have reached the maximum try. Try next time.\n");
+            return;
+          }
+         pID = getToken("Enter valid product ID: ");
+        }
+    
         Product result;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter 1 to add a product, 2 to remove a product, or 3 to edit a current product");
-        int choice = scanner.nextInt();
-
-        if (choice == 1){
-            addProduct();
-        }
-
-        else if (choice == 2){
-
-
-
-        }
-
-        else{
-
-        }
+        do {
+            String title = getToken("Enter Product Name: ");
+            String Quantity = getToken("Enter quantity: ");
+            String Price = getToken("Enter the price: ");
+            int quantity = Integer.parseInt(Quantity);
+            double price = Double.parseDouble(Price);
+            result = warehouse.addProduct(title, pID, price, quantity);
+            if (result != null) {
+                System.out.println(result);
+            } else {
+                System.out.println("Product could not be added. ");
+            }
+            if (!yesOrNo("Edit more product prices?")) {
+                break;
+            }
+        } while (true);
     }
 
     public void becomeSalesclerk(){
