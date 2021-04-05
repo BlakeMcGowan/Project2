@@ -18,6 +18,7 @@ public class Clerkstate extends WarehouseState {
     private static final int QUERY = 9;
     private static final int USERMENU = 10;
     private static final int HELP = 11;
+    
     private Clerkstate() {
         super();
         warehouse = Warehouse.instance();
