@@ -36,6 +36,10 @@ public class Product implements Serializable {
     public Iterator<Shipment> getSupplier() {
         return productSupplier.iterator();
     }
+    public boolean link(Supplier Shipment, double p){
+        Shipment Ship = new Shipment (Shipment, p);
+        return productSupplier.add(Ship) ? true: false;
+    }
 
     public Iterator getPrices(){
         return productPrices.iterator();

@@ -18,6 +18,16 @@ public class Supplier implements Serializable {
         this.phone = phone;
         id = MEMBER_STRING + (SupplierIDServer.instance()).getId();
     }
+    public boolean assignProduct(Product product) {
+        if (Product.add(product))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public Iterator<Product> getProducts(){
         return Product.iterator();
@@ -26,6 +36,7 @@ public class Supplier implements Serializable {
     public String getName() {
         return name;
     }
+    
 
     public String getPhone() {
         return phone;

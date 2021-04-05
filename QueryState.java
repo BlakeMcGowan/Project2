@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 public class QueryState extends WarehouseState {
+    private static QueryState queryState;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
     private static final int LOGOUT = 0;
@@ -15,7 +16,11 @@ public class QueryState extends WarehouseState {
 
 
 
-    private static QueryState queryState;
+    private QueryState() {
+        super();
+        warehouse = Warehouse.instance();
+        //context = WarehouseContext.instance();
+    }
 
 
     public static QueryState instance() {
@@ -87,7 +92,15 @@ public class QueryState extends WarehouseState {
     }
 
     public void clientsWithNoTransactions(){
+        String clientId = WarehouseContext.instance().getUser();
+        Client client = warehouse.getClient(clientId);
+        Iterator result = warehouse.getTransactions(clientId);
+        String transList = "";
 
+        while (result.hasNext()) {
+            Transaction transaction = (Transaction) (result.next());
+            transList = transList + transaction.toString() + "\n";
+        }
     }
 
 

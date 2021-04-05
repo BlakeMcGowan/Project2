@@ -18,12 +18,6 @@ public class Security {
             }
         }//End of else if statement
 
-        else if (state == WarehouseContext.CLIENT_STATE) {
-            if (userID.equals("client") && password.equals("client")) {
-                return true;
-            }
-        }//End of else if statement
-
         return false;
     }//End of verifyPassword
 

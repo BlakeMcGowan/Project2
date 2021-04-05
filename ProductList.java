@@ -37,6 +37,17 @@ public class ProductList implements Serializable {
         }
     }
 
+    public Product search(String productId)
+    {
+        for (Iterator iterator = products.iterator(); iterator.hasNext();){
+            Product product = (Product) iterator.next();
+            if (product.getId().equals(productId)){
+                return product;
+            }
+        }
+        return null;
+    }
+
     private void readObject(java.io.ObjectInputStream input) {
         try {
             if (productList != null) {
