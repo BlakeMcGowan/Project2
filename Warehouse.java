@@ -72,7 +72,7 @@ public class Warehouse implements Serializable {
         {
           return null;
         }
-        boolean success = product.link(supplier, quantity, price);
+        boolean success = product.link(supplier, price);
         success = supplier.assignProduct(product);
         if (success) {
           return product;
