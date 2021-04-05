@@ -58,7 +58,7 @@ public class LoginState extends WarehouseState{
     }
 
     private void clerk(){
-        System.out.println("Enter ClerkID \n");
+        System.out.println("Enter ManagerID \n");
         try{
             String line = reader.readLine();
             WarehouseContext.setClerk(line);
@@ -70,7 +70,7 @@ public class LoginState extends WarehouseState{
     }
 
     private void user(){
-        System.out.println("Enter ClientID \n");
+        System.out.println("Enter ClerkID \n");
         try{
             String line = reader.readLine();
             WarehouseContext.setClient(line);
