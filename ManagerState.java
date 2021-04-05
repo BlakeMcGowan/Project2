@@ -107,13 +107,11 @@ public class ManagerState extends WarehouseState{
 
     public void addProduct() {
         Product result;
-        Product product;
         do {
             String title = getToken("Enter Product Name: ");
             String pID = getToken("Please enter productID");
             String Quantity = getToken("Enter quantity: ");
             String Price = getToken("Enter the price: ");
-            product = warehouse.findProduct(pID);
             int quantity = Integer.parseInt(Quantity);
             double price = Double.parseDouble(Price);
             result = warehouse.addProduct(title, pID, price, quantity);
