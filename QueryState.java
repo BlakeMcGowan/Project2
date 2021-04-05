@@ -92,15 +92,14 @@ public class QueryState extends WarehouseState {
     }
 
     public void clientsWithNoTransactions(){
-        String clientId = WarehouseContext.instance().getUser();
-        Client client = warehouse.getClient(clientId);
-        Iterator result = warehouse.getTransactions(clientId);
-        String transList = "";
-
-        while (result.hasNext()) {
-            Transaction transaction = (Transaction) (result.next());
-            transList = transList + transaction.toString() + "\n";
+        Iterator<Client> allClient = warehouse.getMembers();
+        System.out.println("---------------------------------------------------------------");
+        while (allClient.hasNext()){
+            Client client = allClient.next();
+            System.out.println(client.toString());
         }
+        System.out.println("---------------------------------------------------------------\n");
+
     }
 
 
