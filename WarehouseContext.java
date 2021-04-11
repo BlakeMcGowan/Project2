@@ -1,8 +1,4 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
-import java.text.*;
 import java.io.*;
 public class WarehouseContext {
 
@@ -25,7 +21,6 @@ public class WarehouseContext {
     public static final int LOGIN_STATE = 3;
     public static final int SHOPPING_CART_STATE = 4;
     public static final int QUERY_STATE = 5;
-    private static JFrame LibFrame; 
 
 
     private WarehouseState[] states;
@@ -77,9 +72,6 @@ public class WarehouseContext {
     public static String getClient()
     { return ClientID;}
 
-    public JFrame getFrame()
-    { return LibFrame;}
-
     private WarehouseContext() { //constructor
         // retrieve();
 
@@ -110,10 +102,6 @@ public class WarehouseContext {
         nextState[SHOPPING_CART_STATE][CLIENT_STATE] = CLIENT_STATE;
 
         currentState = LOGIN_STATE;
-
-
-        LibFrame = new JFrame("Library GUI");
-        LibFrame.setSize(200,200);
     }
 
     public void changeState(int transition)
